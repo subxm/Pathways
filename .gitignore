@@ -12,6 +12,8 @@
 
 # Local tracking
 .pids.txt
+start-services.ps1
+stop-services.ps1
 
 # Node / Frontend
 **/node_modules/
