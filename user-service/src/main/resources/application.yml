@@ -1,0 +1,26 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://ep-fancy-grass-ahyz5733-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_XnF2PjEwU5GT
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        default_schema: user_schema
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: pathways_secret_key_must_be_at_least_256_bits_long_for_security_reasons_1234567890
+  # 15 minutes in milliseconds
+  accessTokenExpirationMs: 900000
+  # 7 days in milliseconds
+  refreshTokenExpirationMs: 604800000

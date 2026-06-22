@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: path-service
+  datasource:
+    url: jdbc:postgresql://ep-fancy-grass-ahyz5733-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_XnF2PjEwU5GT
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        default_schema: path_schema
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+gemini:
+  apiKey: ${GEMINI_API_KEY:}
+  url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
+
+youtube:
+  apiKey: ${YOUTUBE_API_KEY:}

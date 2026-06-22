@@ -1,0 +1,32 @@
+# Maven / Build
+**/target/
+/maven/
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+/logs/
+*.log
+
+# Local tracking
+.pids.txt
+
+# Node / Frontend
+**/node_modules/
+**/dist/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs and OS
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
