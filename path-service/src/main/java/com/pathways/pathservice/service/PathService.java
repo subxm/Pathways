@@ -45,9 +45,11 @@ public class PathService {
         String skill = request.getSkill();
         String level = request.getLevel();
         String goal = request.getGoal();
+        String studyHours = request.getStudyHours();
+        String learningStyle = request.getLearningStyle();
 
         // 1. Generate path structure using Gemini
-        GeminiPathResponse geminiResponse = geminiClient.generateLearningPath(skill, level, goal);
+        GeminiPathResponse geminiResponse = geminiClient.generateLearningPath(skill, level, goal, studyHours, learningStyle);
 
         // 2. Build model structure
         LearningPath path = LearningPath.builder()
@@ -133,7 +135,6 @@ public class PathService {
         // 4. Save path (cascades to all children)
         return pathRepository.save(path);
     }
-
     @Transactional
     public LearningPath toggleTopicCompletion(UUID pathId, UUID topicId, boolean isCompleted, UUID userId) {
         LearningPath path = pathRepository.findById(pathId)
@@ -159,6 +160,15 @@ public class PathService {
             topic.setCompleted(isCompleted);
             topicRepository.save(topic);
 
+            // Sync in-memory list so returned JSON has the correct state
+            path.getWeeks().forEach(w -> {
+                w.getTopics().forEach(t -> {
+                    if (t.getId().equals(topicId)) {
+                        t.setCompleted(isCompleted);
+                    }
+                });
+            });
+
             // Re-calculate completion counts
             long completedCount = path.getWeeks().stream()
                     .flatMap(w -> w.getTopics().stream())
@@ -173,7 +183,6 @@ public class PathService {
 
         return path;
     }
-
     public List<LearningPath> getPathsByUserId(UUID userId) {
         return pathRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }

@@ -29,10 +29,10 @@ export const usePathStore = create((set, get) => ({
     }
   },
 
-  generatePath: async (skill, level, goal) => {
+  generatePath: async (skill, level, goal, studyHours, learningStyle) => {
     set({ isGeneratingPath: true });
     try {
-      const res = await api.post('/api/paths', { skill, level, goal });
+      const res = await api.post('/api/paths', { skill, level, goal, studyHours, learningStyle });
       set((state) => ({
         paths: [res.data, ...state.paths],
         currentPath: res.data,

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, LayoutDashboard, User } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, User, ChevronLeft } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import MobileMenu from './MobileMenu';
 
@@ -8,6 +8,8 @@ export default function Navbar({ isLanding = false }) {
   const { isAuthenticated, logoutUser, user } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +18,16 @@ export default function Navbar({ isLanding = false }) {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleLogout = async () => {
@@ -27,26 +39,28 @@ export default function Navbar({ isLanding = false }) {
     <header 
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled 
-          ? isLanding 
-            ? 'bg-[#0D0D0C]/80 backdrop-blur-md border-b border-white/5 py-3' 
-            : 'bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 py-3'
+          ? 'bg-[#0D0D0C]/80 backdrop-blur-md border-b border-white/5 py-3' 
           : 'bg-transparent py-5 sm:py-6'
       }`}
     >
       <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 flex justify-between items-center relative">
-        {/* Left: Wordmark */}
-        <Link 
-          to="/" 
-          className="font-heading text-xl sm:text-2xl tracking-tight select-none focus:outline-none z-10"
-          style={{ fontFamily: 'var(--font-heading)', color: isLanding ? '#FFFFFF' : 'var(--color-text)' }}
-        >
-          Pathways
-        </Link>
+        {isLanding ? (
+          <>
+            {/* Left: Wordmark (only on Landing) */}
+            <Link 
+              to="/" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="font-heading text-xl sm:text-2xl tracking-tight select-none focus:outline-none z-10 text-white"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Pathways
+            </Link>
 
-        {/* Center: Desktop Nav (Perfectly Centered & Symmetrical) */}
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-6">
-          {isLanding ? (
-            <>
+            {/* Center: Desktop Nav (Perfectly Centered & Symmetrical) */}
+            <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-6">
               <a 
                 href="#features" 
                 className="text-sm font-medium transition-opacity hover:opacity-70 text-white"
@@ -83,91 +97,140 @@ export default function Navbar({ isLanding = false }) {
               >
                 FAQ
               </a>
-            </>
-          ) : (
+            </div>
+
+            {/* Right: Actions */}
+            <div className="hidden md:flex items-center gap-4 z-10">
+              {isAuthenticated ? (
+                <div className="flex items-center gap-3">
+                  <Link
+                    to="/dashboard"
+                    className="bg-accent text-white text-xs font-semibold px-4 py-2 rounded-lg hover:brightness-110 active:scale-95 transition flex items-center gap-1.5"
+                  >
+                    <LayoutDashboard size={14} />
+                    <span>Dashboard</span>
+                  </Link>
+                  
+                  <div className="relative" ref={dropdownRef}>
+                    <button 
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className="w-9 h-9 rounded-full border border-white/5 hover:border-accent bg-white/5 text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center transition focus:outline-none"
+                      title="Profile Options"
+                    >
+                      <User size={18} />
+                    </button>
+
+                    {isDropdownOpen && (
+                      <div className="absolute right-0 mt-2 w-48 bg-[#121211] border border-white/10 rounded-xl shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                        <Link
+                          to="/profile"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white transition font-medium"
+                        >
+                          <User size={16} className="text-white/60" />
+                          <span>Profile</span>
+                        </Link>
+                        <div className="h-px bg-white/5 my-1" />
+                        <button
+                          onClick={async () => {
+                            setIsDropdownOpen(false);
+                            await handleLogout();
+                          }}
+                          className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-950/20 hover:text-red-400 transition font-medium text-left"
+                        >
+                          <LogOut size={16} />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Link 
+                    to="/login" 
+                    className="bg-[#F2F2EE] text-[#192837] text-sm font-semibold px-5 py-2 rounded-lg hover:bg-neutral-200 transition duration-200 active:scale-95"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-lg hover:shadow-md hover:brightness-110 transition duration-200 active:scale-95"
+                  >
+                    Start Learning
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile: Hamburger Button */}
+            <button 
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-1.5 focus:outline-none rounded-full z-10 text-white"
+            >
+              <Menu size={24} />
+            </button>
+
+            {/* Mobile Menu Overlay */}
+            <MobileMenu 
+              isOpen={mobileMenuOpen} 
+              onClose={() => setMobileMenuOpen(false)} 
+              isAuthenticated={isAuthenticated}
+              handleLogout={handleLogout}
+              user={user}
+              isLanding={isLanding}
+            />
+          </>
+        ) : (
+          /* Non-landing pages: Render Back to Dashboard on the left, profile on the right */
+          isAuthenticated && (
             <>
-              <Link 
-                to="/" 
-                className="text-sm font-medium transition-opacity hover:opacity-70 text-text dark:text-white"
-              >
-                Home
-              </Link>
+              {/* Back to Dashboard (Left) */}
               <Link 
                 to="/dashboard" 
-                className="text-sm font-medium transition-opacity hover:opacity-70 text-text dark:text-white"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/5 hover:border-accent/40 rounded-lg text-xs font-semibold text-white/80 hover:text-white transition backdrop-blur-sm shadow-md"
               >
-                Dashboard
+                <ChevronLeft size={16} className="text-accent" />
+                <span>Back to Dashboard</span>
               </Link>
-              <Link 
-                to="/profile" 
-                className="text-sm font-medium transition-opacity hover:opacity-70 text-text dark:text-white"
-              >
-                Profile
-              </Link>
-            </>
-          )}
-        </div>
 
-        {/* Right: Actions */}
-        <div className="hidden md:flex items-center gap-4 z-10">
-          {isAuthenticated ? (
-            <div className="flex items-center gap-3">
-              <span className={`text-xs ${isLanding ? 'text-white/70' : 'text-text/70 dark:text-white/70'}`}>
-                Hi, {user?.username}
-              </span>
-              {isLanding && (
-                <Link
-                  to="/dashboard"
-                  className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-lg hover:shadow-lg transition duration-200 active:scale-95 flex items-center gap-1.5"
+              {/* Profile Avatar (Right) */}
+              <div className="relative" ref={dropdownRef}>
+                <button 
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="w-9 h-9 rounded-full border border-white/5 hover:border-accent bg-white/5 text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center transition focus:outline-none"
+                  title="Profile Options"
                 >
-                  <LayoutDashboard size={16} />
-                  Dashboard
-                </Link>
-              )}
-              <button
-                onClick={handleLogout}
-                className="bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-sm font-semibold px-5 py-2 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-700 transition duration-200 active:scale-95 flex items-center gap-1.5"
-              >
-                <LogOut size={16} />
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <>
-              <Link 
-                to="/login" 
-                className="bg-[#F2F2EE] text-[#192837] text-sm font-semibold px-5 py-2 rounded-lg hover:bg-neutral-200 transition duration-200 active:scale-95"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/signup"
-                className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-lg hover:shadow-md hover:brightness-110 transition duration-200 active:scale-95"
-              >
-                Start Learning
-              </Link>
+                  <User size={18} />
+                </button>
+
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-[#121211] border border-white/10 rounded-xl shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white transition font-medium"
+                    >
+                      <User size={16} className="text-white/60" />
+                      <span>Profile</span>
+                    </Link>
+                    <div className="h-px bg-white/5 my-1" />
+                    <button
+                      onClick={async () => {
+                        setIsDropdownOpen(false);
+                        await handleLogout();
+                      }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-950/20 hover:text-red-400 transition font-medium text-left"
+                    >
+                      <LogOut size={16} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </>
-          )}
-        </div>
-
-        {/* Mobile: Hamburger Button */}
-        <button 
-          onClick={() => setMobileMenuOpen(true)}
-          className="md:hidden p-1.5 focus:outline-none rounded-full z-10"
-          style={{ color: isLanding ? '#FFFFFF' : 'var(--color-text)' }}
-        >
-          <Menu size={24} />
-        </button>
-
-        {/* Mobile Menu Overlay */}
-        <MobileMenu 
-          isOpen={mobileMenuOpen} 
-          onClose={() => setMobileMenuOpen(false)} 
-          isAuthenticated={isAuthenticated}
-          handleLogout={handleLogout}
-          user={user}
-          isLanding={isLanding}
-        />
+          )
+        )}
       </div>
     </header>
   );

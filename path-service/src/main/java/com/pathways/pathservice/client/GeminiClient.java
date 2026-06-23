@@ -31,8 +31,8 @@ public class GeminiClient {
         this.objectMapper = objectMapper;
     }
 
-    public GeminiPathResponse generateLearningPath(String skill, String level, String goal) {
-        String prompt = buildPrompt(skill, level, goal);
+    public GeminiPathResponse generateLearningPath(String skill, String level, String goal, String studyHours, String learningStyle) {
+        String prompt = buildPrompt(skill, level, goal, studyHours, learningStyle);
 
         // Construct request payload
         Map<String, Object> part = new HashMap<>();
@@ -92,31 +92,61 @@ public class GeminiClient {
         }
     }
 
-    private String buildPrompt(String skill, String level, String goal) {
-        return "You are an expert curriculum designer. Generate a structured learning path for learning " + skill + 
-                " at the " + level + " level. " + 
-                (goal != null && !goal.trim().isEmpty() ? "The user's goal is: " + goal + ". " : "") + 
-                "\n\nRules:\n" +
-                "1. Keep it structured strictly into weeks (generate between 4 to 8 weeks depending on complexity).\n" +
-                "2. Each week must have a theme, 2 to 3 objectives, and 3 to 5 key topics.\n" +
-                "3. Each topic must have a title, short description, and a 'suggestedDocUrl' which is a real official documentation link or highly reputable article link for that topic (e.g., MDN, React Docs, Spring Docs, Wikipedia, etc.).\n" +
-                "4. Your response must be valid JSON matching the following schema structure, with no markdown formatting tags:\n" +
-                "{\n" +
-                "  \"weeks\": [\n" +
-                "    {\n" +
-                "      \"weekNumber\": 1,\n" +
-                "      \"theme\": \"Week Theme Title\",\n" +
-                "      \"objectives\": [\"Objective 1\", \"Objective 2\"],\n" +
-                "      \"topics\": [\n" +
-                "        {\n" +
-                "          \"title\": \"Topic Title\",\n" +
-                "          \"description\": \"Description explaining what this topic covers.\",\n" +
-                "          \"suggestedDocUrl\": \"https://example.com/docs\"\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
+    private String buildPrompt(String skill, String level, String goal, String studyHours, String learningStyle) {
+        StringBuilder prompt = new StringBuilder();
+        prompt.append("You are an expert curriculum designer. Generate a highly personalized and structured learning path for learning ")
+                .append(skill).append(" at the ").append(level).append(" level.\n");
+        
+        if (goal != null && !goal.trim().isEmpty()) {
+            prompt.append("The user's primary goal is: ").append(goal).append(".\n");
+        }
+        
+        if (studyHours != null && !studyHours.trim().isEmpty()) {
+            prompt.append("The user can dedicate ").append(studyHours).append(" per week for study. ")
+                  .append("Scale the weekly depth, scope, and amount of topics accordingly so it fits their time budget. ")
+                  .append("If they have a very light schedule (e.g., 1-3 hours/week), focus on the absolute essentials and generate fewer weeks or fewer topics per week. ")
+                  .append("If they have a full-time or intense schedule, make the curriculum comprehensive and challenging.\n");
+        }
+        
+        if (learningStyle != null && !learningStyle.trim().isEmpty()) {
+            prompt.append("The user's preferred learning style is: ").append(learningStyle).append(".\n")
+                  .append("Format the curriculum to align with this style:\n");
+            
+            if (learningStyle.toLowerCase().contains("practical") || learningStyle.toLowerCase().contains("project")) {
+                prompt.append("- Emphasize hands-on coding milestones, building small projects each week, and practical labs. ")
+                      .append("Make weekly themes and topics action-oriented.\n");
+            } else if (learningStyle.toLowerCase().contains("theory") || learningStyle.toLowerCase().contains("academic")) {
+                prompt.append("- Emphasize conceptual fundamentals, underlying math/algorithms, deep architectural theories, and academic reading topics.\n");
+            } else if (learningStyle.toLowerCase().contains("document") || learningStyle.toLowerCase().contains("reference")) {
+                prompt.append("- Emphasize reading official specifications, guides, and documentation. Focus topics on mastering library/tool features through their official documentation.\n");
+            } else if (learningStyle.toLowerCase().contains("visual") || learningStyle.toLowerCase().contains("tutorial")) {
+                prompt.append("- Focus on structured tutorials, walk-through guides, and visually-verifiable learning achievements.\n");
+            }
+        }
+
+        prompt.append("\nRules:\n")
+              .append("1. Keep it structured strictly into weeks (generate between 4 to 8 weeks depending on complexity and the user's available time).\n")
+              .append("2. Each week must have a theme, 2 to 3 objectives, and 3 to 5 key topics.\n")
+              .append("3. Each topic must have a title, short description, and a 'suggestedDocUrl' which is a real official documentation link or highly reputable article link for that topic (e.g., MDN, React Docs, Spring Docs, Wikipedia, etc.).\n")
+              .append("4. Your response must be valid JSON matching the following schema structure, with no markdown formatting tags:\n")
+              .append("{\n")
+              .append("  \"weeks\": [\n")
+              .append("    {\n")
+              .append("      \"weekNumber\": 1,\n")
+              .append("      \"theme\": \"Week Theme Title\",\n")
+              .append("      \"objectives\": [\"Objective 1\", \"Objective 2\"],\n")
+              .append("      \"topics\": [\n")
+              .append("        {\n")
+              .append("          \"title\": \"Topic Title\",\n")
+              .append("          \"description\": \"Description explaining what this topic covers.\",\n")
+              .append("          \"suggestedDocUrl\": \"https://example.com/docs\"\n")
+              .append("        }\n")
+              .append("      ]\n")
+              .append("    }\n")
+              .append("  ]\n")
+              .append("}");
+
+        return prompt.toString();
     }
 
     private GeminiPathResponse getFallbackPathResponse(String skill, String level, String goal) {
