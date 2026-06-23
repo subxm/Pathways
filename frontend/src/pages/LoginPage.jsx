@@ -32,34 +32,70 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
-    setGoogleLoading(true);
-    setError('');
-
-    const googleUser = 'google_pathways';
-    const googlePass = 'GoogleAuthSecurePass123!';
-    const googleEmail = 'google_tester@pathways.dev';
-
-    // 1. Try to login directly
-    let res = await loginUser(googleUser, googlePass);
-    if (res.success) {
-      const redirect = searchParams.get('redirect') || '/dashboard';
-      navigate(redirect);
+    if (typeof window.google === 'undefined') {
+      setError('Google Authentication is currently unavailable. Please try again later.');
       return;
     }
 
-    // 2. If login fails, register the user then login
-    const regRes = await registerUser(googleUser, googleEmail, googlePass);
-    if (regRes.success) {
-      const loginRes = await loginUser(googleUser, googlePass);
-      if (loginRes.success) {
-        const redirect = searchParams.get('redirect') || '/dashboard';
-        navigate(redirect);
-      } else {
-        setError('Google authentication failed during auto-login.');
-        setGoogleLoading(false);
-      }
-    } else {
-      setError(regRes.message || 'Google registration failed.');
+    setGoogleLoading(true);
+    setError('');
+
+    try {
+      const tokenClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: '947908081568-uhhhdgqktbhqmu7r8cimlgv4ji0mbq54.apps.googleusercontent.com',
+        scope: 'openid email profile',
+        callback: async (tokenResponse) => {
+          if (tokenResponse && tokenResponse.access_token) {
+            try {
+              const userInfoRes = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`);
+              const userInfo = await userInfoRes.json();
+              
+              const { email, sub } = userInfo;
+              if (!email || !sub) {
+                setError('Could not retrieve user info from Google.');
+                setGoogleLoading(false);
+                return;
+              }
+
+              const googleUser = `google_${sub}`;
+              const googlePass = `GoogleAuthSecure_${sub}!`;
+
+              // 1. Try to login directly
+              let res = await loginUser(googleUser, googlePass);
+              if (res.success) {
+                const redirect = searchParams.get('redirect') || '/dashboard';
+                navigate(redirect);
+                return;
+              }
+
+              // 2. If login fails, register the user then login
+              const regRes = await registerUser(googleUser, email, googlePass);
+              if (regRes.success) {
+                const loginRes = await loginUser(googleUser, googlePass);
+                if (loginRes.success) {
+                  const redirect = searchParams.get('redirect') || '/dashboard';
+                  navigate(redirect);
+                } else {
+                  setError('Google authentication failed during auto-login.');
+                  setGoogleLoading(false);
+                }
+              } else {
+                setError(regRes.message || 'Google registration failed.');
+                setGoogleLoading(false);
+              }
+            } catch (err) {
+              setError('Failed to fetch user info from Google.');
+              setGoogleLoading(false);
+            }
+          } else {
+            setError('Google sign-in was cancelled or failed.');
+            setGoogleLoading(false);
+          }
+        },
+      });
+      tokenClient.requestAccessToken();
+    } catch (e) {
+      setError('An error occurred during Google Sign-In.');
       setGoogleLoading(false);
     }
   };
