@@ -491,7 +491,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="relative z-10 py-8 border-t border-white/5 text-center text-xs text-white/30">
-        &copy; {new Date().getFullYear()} Pathways. Portfolio project designed with intent, care, and taste.
+        &copy; {new Date().getFullYear()} Pathways.
       </footer>
     </div>
   );
