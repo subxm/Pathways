@@ -82,11 +82,6 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<java.util.List<UserDto>> getAllUsers() {
-        return ResponseEntity.ok(authService.getAllUsers());
-    }
-
     @GetMapping("/me")
     public ResponseEntity<UserDto> me(@RequestHeader(value = "X-User-Id", required = false) String userIdHeader,
                                       HttpServletRequest request) {

@@ -157,12 +157,6 @@ public class AuthService {
         return new TokenContainer(accessToken, refreshTokenStr, mapToDto(user));
     }
 
-    public java.util.List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(this::mapToDto)
-                .collect(java.util.stream.Collectors.toList());
-    }
-
     public UserDto getUserById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
