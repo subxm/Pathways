@@ -243,7 +243,7 @@ export default function LandingPage() {
             animate="visible"
             className="mt-6 text-sm sm:text-base md:text-lg text-white/60 max-w-2xl font-light leading-relaxed"
           >
-            Type in any skill or domain. Pathways instantly compiles a structured, weekly curriculum, fetches real tutorials & books in parallel, and opens a context-aware AI assistant.
+            Instantly generate structured weekly curriculums for any skill, complete with curated resources and a context-aware AI study guide.
           </motion.p>
 
           {/* CTAs */}
