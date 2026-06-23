@@ -487,60 +487,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Under-the-hood System Tech Stack Section */}
-      <section className="relative z-10 w-full max-w-6xl mx-auto px-6 py-16 border-t border-white/5">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-5">
-            <span className="text-xs font-semibold text-accent uppercase tracking-wider">
-              Engineering Specs
-            </span>
-            <h3 className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight mt-2" style={{ fontFamily: 'var(--font-heading)' }}>
-              Built with Senior Design Patterns
-            </h3>
-            <p className="text-xs sm:text-sm text-white/50 leading-relaxed font-light mt-4">
-              Pathways is modeled as a decoupled microservices project. If downstream APIs suffer latency or invalid keys, the gateway and service layers enforce fail-safes so users can continue studying.
-            </p>
-            <div className="mt-6 flex flex-col gap-3 text-xs text-white/70">
-              <div className="flex items-center gap-2.5">
-                <Cpu size={16} className="text-accent" />
-                <span>**Spring Boot 3.x** microservices: Auth, Path, and Chat Services</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Database size={16} className="text-accent" />
-                <span>**Neon Postgres** multi-schema grouping to separate scopes</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <ShieldAlert size={16} className="text-accent" />
-                <span>**Gateway Filters & JWTs** in cookies with custom CORS settings</span>
-              </div>
-            </div>
-          </div>
-          <div className="lg:col-span-7 bg-white/5 border border-white/5 rounded-2xl p-6 font-mono text-[10px] leading-relaxed text-white/50 overflow-x-auto shadow-xl">
-            <span className="text-white/80 font-bold block mb-2">// Gateway Routing Config (application.yml)</span>
-            <pre className="text-accent">
-{`spring:
-  cloud:
-    gateway:
-      routes:
-        - id: path-service-protected
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/paths/**
-          filters:
-            - JwtAuthenticationFilter # Forward X-User-Id downstream`}
-            </pre>
-            <span className="text-white/80 font-bold block mt-4 mb-2">// Gemini API Key Fallback Design</span>
-            <pre className="text-emerald-500">
-{`try {
-    return webClient.post().uri(apiUrl + "?key=" + apiKey).bodyValue(request)...
-} catch (Exception e) {
-    logger.warn("Gemini offline. Initiating curated template fallback.");
-    return getFallbackPathResponse(skill, level, goal);
-}`}
-            </pre>
-          </div>
-        </div>
-      </section>
+
 
       {/* Footer */}
       <footer className="relative z-10 py-8 border-t border-white/5 text-center text-xs text-white/30">
