@@ -175,9 +175,9 @@ export default function LandingPage() {
             </button>
             <a
               href="#interactive-demo"
-              className="py-3.5 px-6 text-sm font-semibold text-white/80 hover:text-white transition duration-200"
+              className="py-3.5 px-8 text-sm font-semibold text-white/80 hover:text-white bg-white/5 border border-white/10 rounded-lg transition-all duration-300 hover:scale-[1.03] hover:bg-white/10 active:scale-[0.97]"
             >
-              Live Demo Preview ↓
+              Live Demo Preview
             </a>
           </motion.div>
         </div>
