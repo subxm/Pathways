@@ -47,6 +47,15 @@ public class AuthController {
         return ResponseEntity.ok(tokens.getUser());
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<UserDto> googleLogin(@RequestBody GoogleLoginRequest request, HttpServletResponse response) {
+        TokenContainer tokens = authService.loginOrRegisterGoogleUser(request.getEmail(), request.getSub());
+        
+        setAuthCookies(response, tokens.getAccessToken(), tokens.getRefreshToken());
+        
+        return ResponseEntity.ok(tokens.getUser());
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<UserDto> refresh(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = getCookieValue(request, "refresh_token");
@@ -71,6 +80,11 @@ public class AuthController {
         clearAuthCookies(response);
         
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<java.util.List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(authService.getAllUsers());
     }
 
     @GetMapping("/me")

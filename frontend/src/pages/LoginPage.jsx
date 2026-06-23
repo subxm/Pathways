@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const { loginUser, registerUser, isLoading } = useAuthStore();
+  const { loginUser, loginWithGoogle, isLoading } = useAuthStore();
   const [googleLoading, setGoogleLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -57,30 +57,12 @@ export default function LoginPage() {
                 return;
               }
 
-              const googleUser = `google_${sub}`;
-              const googlePass = `GoogleAuthSecure_${sub}!`;
-
-              // 1. Try to login directly
-              let res = await loginUser(googleUser, googlePass);
+              const res = await loginWithGoogle(email, sub);
               if (res.success) {
                 const redirect = searchParams.get('redirect') || '/dashboard';
                 navigate(redirect);
-                return;
-              }
-
-              // 2. If login fails, register the user then login
-              const regRes = await registerUser(googleUser, email, googlePass);
-              if (regRes.success) {
-                const loginRes = await loginUser(googleUser, googlePass);
-                if (loginRes.success) {
-                  const redirect = searchParams.get('redirect') || '/dashboard';
-                  navigate(redirect);
-                } else {
-                  setError('Google authentication failed during auto-login.');
-                  setGoogleLoading(false);
-                }
               } else {
-                setError(regRes.message || 'Google registration failed.');
+                setError(res.message || 'Google authentication failed.');
                 setGoogleLoading(false);
               }
             } catch (err) {

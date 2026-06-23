@@ -124,6 +124,45 @@ public class AuthService {
         });
     }
 
+    @Transactional
+    public TokenContainer loginOrRegisterGoogleUser(String email, String sub) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        
+        if (user == null) {
+            String googleUsername = "google_" + sub;
+            if (userRepository.existsByUsername(googleUsername)) {
+                user = userRepository.findByUsername(googleUsername).orElseThrow();
+            } else {
+                user = User.builder()
+                        .username(googleUsername)
+                        .email(email)
+                        .password(passwordEncoder.encode("GoogleAuthSecure_" + sub + "!"))
+                        .build();
+                user = userRepository.save(user);
+            }
+        }
+        
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getUsername());
+        String refreshTokenStr = UUID.randomUUID().toString();
+
+        RefreshToken refreshToken = RefreshToken.builder()
+                .user(user)
+                .token(refreshTokenStr)
+                .expiryDate(Instant.now().plusMillis(refreshTokenExpirationMs))
+                .revoked(false)
+                .build();
+
+        refreshTokenRepository.save(refreshToken);
+
+        return new TokenContainer(accessToken, refreshTokenStr, mapToDto(user));
+    }
+
+    public java.util.List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(this::mapToDto)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
     public UserDto getUserById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
