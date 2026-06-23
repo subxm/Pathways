@@ -22,7 +22,7 @@ export default function Navbar({ isLanding = false }) {
         className="font-heading text-xl sm:text-2xl tracking-tight select-none focus:outline-none"
         style={{ fontFamily: 'var(--font-heading)', color: isLanding ? '#FFFFFF' : 'var(--color-text)' }}
       >
-        Pathways<span className="text-accent">.</span>
+        Pathways
       </Link>
 
       {/* Center: Desktop Nav */}
