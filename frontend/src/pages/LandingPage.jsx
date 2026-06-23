@@ -209,7 +209,7 @@ export default function LandingPage() {
   return (
     <div className="relative min-h-screen bg-[#0D0D0C] text-white overflow-x-hidden flex flex-col font-body">
       {/* Grid Mesh Overlay (Hero Only) */}
-      <div className="absolute top-0 left-0 right-0 h-[100vh] bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0" />
+      <div className="absolute top-0 left-0 right-0 h-[100vh] bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_90%_at_50%_0%,#000_80%,transparent_100%)] pointer-events-none z-0" />
 
       {/* Radial Spotlights */}
       <div className="absolute top-[10%] left-[50%] -translate-x-[50%] w-[500px] md:w-[800px] h-[350px] md:h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none z-0" />
