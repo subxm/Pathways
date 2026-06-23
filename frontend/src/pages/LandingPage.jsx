@@ -277,7 +277,7 @@ export default function LandingPage() {
           className="mt-16 flex flex-wrap gap-2.5 justify-center items-center relative z-10"
         >
           <span className="text-xs font-semibold text-white/40 uppercase tracking-wider mr-2">
-            Try a Template:
+            Select a path to preview:
           </span>
           {[
             { key: 'ml', label: 'Machine Learning Foundations' },
@@ -358,7 +358,7 @@ export default function LandingPage() {
             </div>
 
             {/* Middle Column: Current Week Details & Topics */}
-            <div className="lg:col-span-5 p-6 flex flex-col gap-6 overflow-y-auto max-h-[500px]">
+            <div className="lg:col-span-5 p-6 flex flex-col gap-6 overflow-y-auto no-scrollbar max-h-[500px]">
               <div>
                 <div className="text-[10px] font-semibold text-accent uppercase tracking-wider">
                   Active Curated Week
@@ -448,13 +448,10 @@ export default function LandingPage() {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-white/80">
                   Pathways Assistant
                 </span>
-                <span className="text-[9px] bg-white/10 text-white/50 px-1.5 py-0.5 rounded ml-auto">
-                  Gemini-1.5
-                </span>
               </div>
 
               {/* Chat Messages */}
-              <div className="flex-grow flex flex-col gap-3 py-4 overflow-y-auto custom-scrollbar select-none text-[11px]">
+              <div className="flex-grow flex flex-col gap-3 py-4 overflow-y-auto no-scrollbar select-none text-[11px]">
                 {chatMessages.map((msg, i) => (
                   <div
                     key={i}
@@ -506,42 +503,6 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </main>
-
-      {/* Feature Stats Grid */}
-      <motion.section 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-12 border-t border-white/5"
-      >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="p-4 bg-white/5 border border-white/5 rounded-xl">
-            <h4 className="text-2xl font-bold font-heading text-accent">100%</h4>
-            <p className="text-[10px] uppercase font-semibold text-white/40 tracking-wider mt-1">
-              Custom Timelines
-            </p>
-          </div>
-          <div className="p-4 bg-white/5 border border-white/5 rounded-xl">
-            <h4 className="text-2xl font-bold font-heading text-accent">Real-Time</h4>
-            <p className="text-[10px] uppercase font-semibold text-white/40 tracking-wider mt-1">
-              YouTube & Book Curations
-            </p>
-          </div>
-          <div className="p-4 bg-white/5 border border-white/5 rounded-xl">
-            <h4 className="text-2xl font-bold font-heading text-accent">Resilient</h4>
-            <p className="text-[10px] uppercase font-semibold text-white/40 tracking-wider mt-1">
-              Offline Mock Fallback
-            </p>
-          </div>
-          <div className="p-4 bg-white/5 border border-white/5 rounded-xl">
-            <h4 className="text-2xl font-bold font-heading text-accent">&lt; 3 Sec</h4>
-            <p className="text-[10px] uppercase font-semibold text-white/40 tracking-wider mt-1">
-              Generation Speed
-            </p>
-          </div>
-        </div>
-      </motion.section>
 
       {/* Features Section */}
       <motion.section 
@@ -611,9 +572,9 @@ export default function LandingPage() {
         </div>
       </motion.section>
 
-      {/* Option A: Curated Subject Library Grid */}
+      {/* How It Works Section */}
       <motion.section 
-        id="library" 
+        id="how-it-works" 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -622,178 +583,53 @@ export default function LandingPage() {
       >
         <div className="text-center mb-16">
           <span className="text-xs font-semibold text-accent uppercase tracking-wider">
-            Subject Library
+            Robust Design Principles
           </span>
-          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
-            Explore Popular Pathways
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2" style={{ fontFamily: 'var(--font-heading)' }}>
+            Curate. Learn. Adapt.
           </h2>
           <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
-            Select a curated subject template below to preview it instantly in the interactive workspace above.
+            Behind the clean aesthetic lies a scalable microservice architecture engineered for high availability.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: Software Engineering */}
-          <div 
-            onClick={() => {
-              handleSubjectChange('react');
-              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
-              activeSubject === 'react' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
-            }`}
-          >
-            <div>
-              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
-                <Cpu size={22} />
-              </div>
-              <h3 className="text-lg font-bold mb-2">React Web Apps</h3>
-              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
-                Master virtual DOM structures, React hook lifecycles, and modern global state engines like Zustand.
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Card 1 */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
+              <Compass size={22} />
             </div>
-            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
-              {activeSubject === 'react' ? 'Active Preview • Scroll Up' : 'Load Template →'}
-            </div>
+            <h3 className="text-base font-bold mb-2">1. Define Your Target</h3>
+            <p className="text-xs text-white/50 leading-relaxed font-light">
+              Enter any technical, programming, or creative skill. Select your capability level and input personal milestones (e.g., job preparation).
+            </p>
           </div>
 
-          {/* Card 2: Data Science & AI */}
-          <div 
-            onClick={() => {
-              handleSubjectChange('ml');
-              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
-              activeSubject === 'ml' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
-            }`}
-          >
-            <div>
-              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
-                <Database size={22} />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Machine Learning Foundations</h3>
-              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
-                Explore regression math, gradient descent calculations, and multi-layer deep neural networks.
-              </p>
+          {/* Card 2 */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
+              <Layers size={22} />
             </div>
-            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
-              {activeSubject === 'ml' ? 'Active Preview • Scroll Up' : 'Load Template →'}
-            </div>
+            <h3 className="text-base font-bold mb-2">2. Parallel Enrichment</h3>
+            <p className="text-xs text-white/50 leading-relaxed font-light">
+              The generator structures weekly timelines while backend processes call the YouTube and Google Books API in parallel to query real reference materials.
+            </p>
           </div>
 
-          {/* Card 3: Creative Arts */}
-          <div 
-            onClick={() => {
-              handleSubjectChange('writing');
-              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
-              activeSubject === 'writing' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
-            }`}
-          >
-            <div>
-              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
-                <Sparkles size={22} />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Creative Fiction Writing</h3>
-              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
-                Deconstruct character arcs, story setup structure, dialogue beats, and literary query techniques.
-              </p>
+          {/* Card 3 */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
+              <Award size={22} />
             </div>
-            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
-              {activeSubject === 'writing' ? 'Active Preview • Scroll Up' : 'Load Template →'}
-            </div>
+            <h3 className="text-base font-bold mb-2">3. Active Study Co-Pilot</h3>
+            <p className="text-xs text-white/50 leading-relaxed font-light">
+              Follow your interactive checklist, checking off complete modules. Slide open the assistant side drawer to run mini-tests or clarify syntax block-by-block.
+            </p>
           </div>
         </div>
       </motion.section>
 
-      {/* Option B: Before & After Contrast Section */}
-      <motion.section 
-        id="comparison" 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5"
-      >
-        <div className="text-center mb-16">
-          <span className="text-xs font-semibold text-accent uppercase tracking-wider">
-            Study Comparison
-          </span>
-          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
-            The Studying Upgrade
-          </h2>
-          <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
-            Compare the struggle of traditional self-directed research against the consolidated Pathways model.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Traditional Way */}
-          <div className="p-8 bg-red-950/10 border border-red-500/10 rounded-2xl flex flex-col justify-between">
-            <div>
-              <div className="w-fit px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-400 rounded-full text-[10px] font-bold uppercase tracking-wider mb-6">
-                Traditional Studying
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-white">Tab Overload & Friction</h3>
-              <ul className="flex flex-col gap-3.5">
-                <li className="text-xs text-white/60 flex items-start gap-2.5">
-                  <span className="text-red-500 font-bold mt-0.5">✕</span>
-                  <span>Scattering bookmarks across dozens of blogs, wikis, and documentation tabs.</span>
-                </li>
-                <li className="text-xs text-white/60 flex items-start gap-2.5">
-                  <span className="text-red-500 font-bold mt-0.5">✕</span>
-                  <span>Wasting hours weeding out outdated or irrelevant YouTube lecture playlists.</span>
-                </li>
-                <li className="text-xs text-white/60 flex items-start gap-2.5">
-                  <span className="text-red-500 font-bold mt-0.5">✕</span>
-                  <span>No feedback loop when code breaks or conceptual definitions feel confusing.</span>
-                </li>
-                <li className="text-xs text-white/60 flex items-start gap-2.5">
-                  <span className="text-red-500 font-bold mt-0.5">✕</span>
-                  <span>Losing track of progress and motivation with static, non-interactive checklists.</span>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-8 text-xs text-red-400/50 font-mono">
-              Result: Constant context-switching, low retention.
-            </div>
-          </div>
-
-          {/* Pathways Way */}
-          <div className="p-8 bg-emerald-950/10 border border-accent/20 rounded-2xl flex flex-col justify-between shadow-[0_4px_24px_rgba(79,121,66,0.05)]">
-            <div>
-              <div className="w-fit px-3 py-1 bg-accent/20 border border-accent/30 text-accent rounded-full text-[10px] font-bold uppercase tracking-wider mb-6">
-                The Pathways Way
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-white">Centralized AI Classrooms</h3>
-              <ul className="flex flex-col gap-3.5">
-                <li className="text-xs text-white/80 flex items-start gap-2.5">
-                  <span className="text-accent font-bold mt-0.5">✓</span>
-                  <span>One single structured timeline mapping out your entire learning journey.</span>
-                </li>
-                <li className="text-xs text-white/80 flex items-start gap-2.5">
-                  <span className="text-accent font-bold mt-0.5">✓</span>
-                  <span>Parallel resource fetching brings targeted lectures and books directly to your desk.</span>
-                </li>
-                <li className="text-xs text-white/80 flex items-start gap-2.5">
-                  <span className="text-accent font-bold mt-0.5">✓</span>
-                  <span>Context-aware Gemini assistant streams quizzes, syntax checks, and debugs.</span>
-                </li>
-                <li className="text-xs text-white/80 flex items-start gap-2.5">
-                  <span className="text-accent font-bold mt-0.5">✓</span>
-                  <span>Interactive checklists persist state, showing your learning speed grow.</span>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-8 text-xs text-accent/80 font-mono">
-              Result: Zero friction, accelerated mastery.
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Option C: Featured Resources Showcase */}
+      {/* Featured Resources Showcase */}
       <motion.section 
         id="resources" 
         initial={{ opacity: 0, y: 30 }}
@@ -911,9 +747,9 @@ export default function LandingPage() {
         </div>
       </motion.section>
 
-      {/* Architecture / How It Works Section */}
+      {/* Curated Subject Library Grid */}
       <motion.section 
-        id="how-it-works" 
+        id="library" 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -922,48 +758,173 @@ export default function LandingPage() {
       >
         <div className="text-center mb-16">
           <span className="text-xs font-semibold text-accent uppercase tracking-wider">
-            Robust Design Principles
+            Subject Library
           </span>
-          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2" style={{ fontFamily: 'var(--font-heading)' }}>
-            Curate. Learn. Adapt.
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
+            Explore Popular Pathways
           </h2>
           <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
-            Behind the clean aesthetic lies a scalable microservice architecture engineered for high availability.
+            Select a curated subject template below to preview it instantly in the interactive workspace above.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
-            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
-              <Compass size={22} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: Software Engineering */}
+          <div 
+            onClick={() => {
+              handleSubjectChange('react');
+              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
+              activeSubject === 'react' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
+            }`}
+          >
+            <div>
+              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+                <Cpu size={22} />
+              </div>
+              <h3 className="text-lg font-bold mb-2">React Web Apps</h3>
+              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
+                Master virtual DOM structures, React hook lifecycles, and modern global state engines like Zustand.
+              </p>
             </div>
-            <h3 className="text-base font-bold mb-2">1. Define Your Target</h3>
-            <p className="text-xs text-white/50 leading-relaxed font-light">
-              Enter any technical, programming, or creative skill. Select your capability level and input personal milestones (e.g., job preparation).
-            </p>
+            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
+              {activeSubject === 'react' ? 'Active Preview • Scroll Up' : 'Load Template →'}
+            </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
-            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
-              <Layers size={22} />
+          {/* Card 2: Data Science & AI */}
+          <div 
+            onClick={() => {
+              handleSubjectChange('ml');
+              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
+              activeSubject === 'ml' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
+            }`}
+          >
+            <div>
+              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+                <Database size={22} />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Machine Learning Foundations</h3>
+              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
+                Explore regression math, gradient descent calculations, and multi-layer deep neural networks.
+              </p>
             </div>
-            <h3 className="text-base font-bold mb-2">2. Parallel Enrichment</h3>
-            <p className="text-xs text-white/50 leading-relaxed font-light">
-              The generator structures weekly timelines while backend processes call the YouTube and Google Books API in parallel to query real reference materials.
-            </p>
+            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
+              {activeSubject === 'ml' ? 'Active Preview • Scroll Up' : 'Load Template →'}
+            </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
-            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
-              <Award size={22} />
+          {/* Card 3: Creative Arts */}
+          <div 
+            onClick={() => {
+              handleSubjectChange('writing');
+              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
+              activeSubject === 'writing' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
+            }`}
+          >
+            <div>
+              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+                <Sparkles size={22} />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Creative Fiction Writing</h3>
+              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
+                Deconstruct character arcs, story setup structure, dialogue beats, and literary query techniques.
+              </p>
             </div>
-            <h3 className="text-base font-bold mb-2">3. Active Study Co-Pilot</h3>
-            <p className="text-xs text-white/50 leading-relaxed font-light">
-              Follow your interactive checklist, checking off complete modules. Slide open the assistant side drawer to run mini-tests or clarify syntax block-by-block.
-            </p>
+            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
+              {activeSubject === 'writing' ? 'Active Preview • Scroll Up' : 'Load Template →'}
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Before & After Contrast Section */}
+      <motion.section 
+        id="comparison" 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5"
+      >
+        <div className="text-center mb-16">
+          <span className="text-xs font-semibold text-accent uppercase tracking-wider">
+            Study Comparison
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
+            The Studying Upgrade
+          </h2>
+          <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
+            Compare the struggle of traditional self-directed research against the consolidated Pathways model.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Traditional Way */}
+          <div className="p-8 bg-red-950/10 border border-red-500/10 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div className="w-fit px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-400 rounded-full text-[10px] font-bold uppercase tracking-wider mb-6">
+                Traditional Studying
+              </div>
+              <h3 className="text-xl font-bold mb-4 text-white">Tab Overload & Friction</h3>
+              <ul className="flex flex-col gap-3.5">
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>Scattering bookmarks across dozens of blogs, wikis, and documentation tabs.</span>
+                </li>
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>Wasting hours weeding out outdated or irrelevant YouTube lecture playlists.</span>
+                </li>
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>No feedback loop when code breaks or conceptual definitions feel confusing.</span>
+                </li>
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>Losing track of progress and motivation with static, non-interactive checklists.</span>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-8 text-xs text-red-400/50 font-mono">
+              Result: Constant context-switching, low retention.
+            </div>
+          </div>
+
+          {/* Pathways Way */}
+          <div className="p-8 bg-emerald-950/10 border border-accent/20 rounded-2xl flex flex-col justify-between shadow-[0_4px_24px_rgba(79,121,66,0.05)]">
+            <div>
+              <div className="w-fit px-3 py-1 bg-accent/20 border border-accent/30 text-accent rounded-full text-[10px] font-bold uppercase tracking-wider mb-6">
+                The Pathways Way
+              </div>
+              <h3 className="text-xl font-bold mb-4 text-white">Centralized AI Classrooms</h3>
+              <ul className="flex flex-col gap-3.5">
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>One single structured timeline mapping out your entire learning journey.</span>
+                </li>
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>Parallel resource fetching brings targeted lectures and books directly to your desk.</span>
+                </li>
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>Context-aware Gemini assistant streams quizzes, syntax checks, and debugs.</span>
+                </li>
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>Interactive checklists persist state, showing your learning speed grow.</span>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-8 text-xs text-accent/80 font-mono">
+              Result: Zero friction, accelerated mastery.
+            </div>
           </div>
         </div>
       </motion.section>
