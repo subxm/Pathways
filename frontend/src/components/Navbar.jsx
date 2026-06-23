@@ -50,12 +50,6 @@ export default function Navbar({ isLanding = false }) {
             >
               How It Works
             </a>
-            <Link 
-              to="/login" 
-              className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
-            >
-              Sign In
-            </Link>
           </>
         )}
       </div>
@@ -69,14 +63,14 @@ export default function Navbar({ isLanding = false }) {
             </span>
             <Link
               to="/dashboard"
-              className="bg-accent text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:shadow-lg transition duration-200 active:scale-95 flex items-center gap-1.5"
+              className="bg-accent text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:shadow-lg transition duration-200 active:scale-95 flex items-center gap-1.5"
             >
               <LayoutDashboard size={16} />
               Dashboard
             </Link>
             <button
               onClick={handleLogout}
-              className="bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-neutral-300 dark:hover:bg-neutral-700 transition duration-200 active:scale-95 flex items-center gap-1.5"
+              className="bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-700 transition duration-200 active:scale-95 flex items-center gap-1.5"
             >
               <LogOut size={16} />
               Sign Out
@@ -86,13 +80,13 @@ export default function Navbar({ isLanding = false }) {
           <>
             <Link 
               to="/login" 
-              className="bg-[#F2F2EE] text-[#192837] text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-neutral-200 transition duration-200 active:scale-95"
+              className="bg-[#F2F2EE] text-[#192837] text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-neutral-200 transition duration-200 active:scale-95"
             >
               Sign In
             </Link>
             <Link
               to="/signup"
-              className="bg-accent text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:shadow-md hover:brightness-110 transition duration-200 active:scale-95"
+              className="bg-accent text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:shadow-md hover:brightness-110 transition duration-200 active:scale-95"
             >
               Start Learning
             </Link>

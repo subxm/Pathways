@@ -122,11 +122,8 @@ export default function LandingPage() {
 
   return (
     <div className="relative min-h-screen bg-[#0D0D0C] text-white overflow-x-hidden flex flex-col font-body">
-      {/* Canvas Background with particles */}
-      <CanvasBackground />
-
       {/* Grid Mesh Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0" />
 
       {/* Radial Spotlights */}
       <div className="absolute top-[10%] left-[50%] -translate-x-[50%] w-[500px] md:w-[800px] h-[350px] md:h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none z-0" />
@@ -138,21 +135,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <main className="relative z-10 max-w-7xl mx-auto px-6 pt-16 md:pt-24 pb-16 text-center flex flex-col items-center">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          {/* Badge */}
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="mb-6 inline-flex items-center gap-1.5 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full text-[10px] sm:text-xs font-semibold tracking-wider text-accent uppercase"
-          >
-            <Sparkles size={12} className="animate-pulse" />
-            <span>Resilient Multi-Service Architecture</span>
-          </motion.div>
-
           {/* Title */}
           <motion.h1
-            custom={1}
+            custom={0}
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -165,7 +150,7 @@ export default function LandingPage() {
 
           {/* Subtitle */}
           <motion.p
-            custom={2}
+            custom={1}
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -176,7 +161,7 @@ export default function LandingPage() {
 
           {/* CTAs */}
           <motion.div
-            custom={3}
+            custom={2}
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -184,10 +169,9 @@ export default function LandingPage() {
           >
             <button
               onClick={handleCtaClick}
-              className="group flex items-center justify-between gap-8 py-3.5 px-6 min-w-[210px] bg-accent text-white text-sm font-semibold rounded-full border border-white/5 shadow-[0_4px_24px_rgba(79,121,66,0.35)] transition-all duration-300 hover:scale-[1.03] hover:brightness-[1.15] active:scale-[0.97] focus:outline-none"
+              className="py-3.5 px-8 bg-accent text-white text-sm font-semibold rounded-lg border border-white/5 shadow-[0_4px_24px_rgba(79,121,66,0.25)] transition-all duration-300 hover:scale-[1.03] hover:brightness-[1.15] active:scale-[0.97] focus:outline-none"
             >
-              <span>Start Learning Free</span>
-              <ArrowRightCircle className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+              Start Learning Free
             </button>
             <a
               href="#interactive-demo"
@@ -201,7 +185,7 @@ export default function LandingPage() {
         {/* Interactive Workspace Mockup */}
         <motion.div
           id="interactive-demo"
-          custom={4}
+          custom={3}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -453,8 +437,8 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Card 1 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col">
-            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col items-center text-center">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
               <Compass size={22} />
             </div>
             <h3 className="text-base font-bold mb-2">1. Define Your Target</h3>
@@ -464,8 +448,8 @@ export default function LandingPage() {
           </div>
 
           {/* Card 2 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col">
-            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col items-center text-center">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
               <Layers size={22} />
             </div>
             <h3 className="text-base font-bold mb-2">2. Parallel Enrichment</h3>
@@ -475,8 +459,8 @@ export default function LandingPage() {
           </div>
 
           {/* Card 3 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col">
-            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col items-center text-center">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
               <Award size={22} />
             </div>
             <h3 className="text-base font-bold mb-2">3. Active Study Co-Pilot</h3>
