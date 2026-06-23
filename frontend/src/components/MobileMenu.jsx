@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, LogOut, LayoutDashboard, User, Zap, Compass, HelpCircle, Library, ArrowLeftRight, BookOpen } from 'lucide-react';
 
-export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLogout, user }) {
+export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLogout, user, isLanding = false }) {
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 }
@@ -67,33 +67,38 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
 
             {/* Links List */}
             <div className="flex flex-col gap-6 my-auto">
-              {isAuthenticated ? (
+              {isLanding ? (
                 <>
-                  <motion.div variants={linkVariants(0)} initial="hidden" animate="visible">
-                    <Link 
-                      to="/dashboard" 
-                      onClick={onClose}
-                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
-                    >
-                      <LayoutDashboard size={20} />
-                      Dashboard
-                    </Link>
-                  </motion.div>
-                  
-                  <motion.div variants={linkVariants(1)} initial="hidden" animate="visible">
-                    <Link 
-                      to="/profile" 
-                      onClick={onClose}
-                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
-                    >
-                      <User size={20} />
-                      Profile
-                    </Link>
-                  </motion.div>
-                </>
-              ) : (
-                <>
-                  <motion.div variants={linkVariants(0)} initial="hidden" animate="visible">
+                  {isAuthenticated && (
+                    <>
+                      <motion.div variants={linkVariants(0)} initial="hidden" animate="visible">
+                        <Link 
+                          to="/dashboard" 
+                          onClick={onClose}
+                          className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                        >
+                          <LayoutDashboard size={20} />
+                          Dashboard
+                        </Link>
+                      </motion.div>
+                      
+                      <motion.div variants={linkVariants(1)} initial="hidden" animate="visible">
+                        <Link 
+                          to="/profile" 
+                          onClick={onClose}
+                          className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                        >
+                          <User size={20} />
+                          Profile
+                        </Link>
+                      </motion.div>
+
+                      {/* Spacer */}
+                      <div className="h-px bg-black/10 my-1" />
+                    </>
+                  )}
+
+                  <motion.div variants={linkVariants(isAuthenticated ? 2 : 0)} initial="hidden" animate="visible">
                     <a 
                       href="#features" 
                       onClick={onClose}
@@ -103,7 +108,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       Features
                     </a>
                   </motion.div>
-                  <motion.div variants={linkVariants(1)} initial="hidden" animate="visible">
+                  <motion.div variants={linkVariants(isAuthenticated ? 3 : 1)} initial="hidden" animate="visible">
                     <a 
                       href="#library" 
                       onClick={onClose}
@@ -113,7 +118,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       Library
                     </a>
                   </motion.div>
-                  <motion.div variants={linkVariants(2)} initial="hidden" animate="visible">
+                  <motion.div variants={linkVariants(isAuthenticated ? 4 : 2)} initial="hidden" animate="visible">
                     <a 
                       href="#comparison" 
                       onClick={onClose}
@@ -123,7 +128,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       Comparison
                     </a>
                   </motion.div>
-                  <motion.div variants={linkVariants(3)} initial="hidden" animate="visible">
+                  <motion.div variants={linkVariants(isAuthenticated ? 5 : 3)} initial="hidden" animate="visible">
                     <a 
                       href="#resources" 
                       onClick={onClose}
@@ -133,7 +138,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       Resources
                     </a>
                   </motion.div>
-                  <motion.div variants={linkVariants(4)} initial="hidden" animate="visible">
+                  <motion.div variants={linkVariants(isAuthenticated ? 6 : 4)} initial="hidden" animate="visible">
                     <a 
                       href="#how-it-works" 
                       onClick={onClose}
@@ -143,7 +148,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       How It Works
                     </a>
                   </motion.div>
-                  <motion.div variants={linkVariants(5)} initial="hidden" animate="visible">
+                  <motion.div variants={linkVariants(isAuthenticated ? 7 : 5)} initial="hidden" animate="visible">
                     <a 
                       href="#faq" 
                       onClick={onClose}
@@ -153,6 +158,45 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       FAQ
                     </a>
                   </motion.div>
+                </>
+              ) : (
+                <>
+                  <motion.div variants={linkVariants(0)} initial="hidden" animate="visible">
+                    <Link 
+                      to="/" 
+                      onClick={onClose}
+                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                    >
+                      <Compass size={20} />
+                      Home
+                    </Link>
+                  </motion.div>
+
+                  {isAuthenticated && (
+                    <>
+                      <motion.div variants={linkVariants(1)} initial="hidden" animate="visible">
+                        <Link 
+                          to="/dashboard" 
+                          onClick={onClose}
+                          className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                        >
+                          <LayoutDashboard size={20} />
+                          Dashboard
+                        </Link>
+                      </motion.div>
+                      
+                      <motion.div variants={linkVariants(2)} initial="hidden" animate="visible">
+                        <Link 
+                          to="/profile" 
+                          onClick={onClose}
+                          className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                        >
+                          <User size={20} />
+                          Profile
+                        </Link>
+                      </motion.div>
+                    </>
+                  )}
                 </>
               )}
             </div>

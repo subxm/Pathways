@@ -45,59 +45,65 @@ export default function Navbar({ isLanding = false }) {
 
         {/* Center: Desktop Nav (Perfectly Centered & Symmetrical) */}
         <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-6">
-          {isAuthenticated ? (
-            <>
-              <Link 
-                to="/dashboard" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
-              >
-                Dashboard
-              </Link>
-              <Link 
-                to="/profile" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
-              >
-                Profile
-              </Link>
-            </>
-          ) : (
+          {isLanding ? (
             <>
               <a 
                 href="#features" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-white"
               >
                 Features
               </a>
               <a 
                 href="#how-it-works" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-white"
               >
                 How It Works
               </a>
               <a 
                 href="#resources" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-white"
               >
                 Resources
               </a>
               <a 
                 href="#library" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-white"
               >
                 Library
               </a>
               <a 
                 href="#comparison" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-white"
               >
                 Comparison
               </a>
               <a 
                 href="#faq" 
-                className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-white"
               >
                 FAQ
               </a>
+            </>
+          ) : (
+            <>
+              <Link 
+                to="/" 
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-text dark:text-white"
+              >
+                Home
+              </Link>
+              <Link 
+                to="/dashboard" 
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-text dark:text-white"
+              >
+                Dashboard
+              </Link>
+              <Link 
+                to="/profile" 
+                className="text-sm font-medium transition-opacity hover:opacity-70 text-text dark:text-white"
+              >
+                Profile
+              </Link>
             </>
           )}
         </div>
@@ -106,16 +112,18 @@ export default function Navbar({ isLanding = false }) {
         <div className="hidden md:flex items-center gap-4 z-10">
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
-              <span className={`text-xs ${isLanding ? 'text-white/70' : 'text-text/70'}`}>
+              <span className={`text-xs ${isLanding ? 'text-white/70' : 'text-text/70 dark:text-white/70'}`}>
                 Hi, {user?.username}
               </span>
-              <Link
-                to="/dashboard"
-                className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-lg hover:shadow-lg transition duration-200 active:scale-95 flex items-center gap-1.5"
-              >
-                <LayoutDashboard size={16} />
-                Dashboard
-              </Link>
+              {isLanding && (
+                <Link
+                  to="/dashboard"
+                  className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-lg hover:shadow-lg transition duration-200 active:scale-95 flex items-center gap-1.5"
+                >
+                  <LayoutDashboard size={16} />
+                  Dashboard
+                </Link>
+              )}
               <button
                 onClick={handleLogout}
                 className="bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-sm font-semibold px-5 py-2 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-700 transition duration-200 active:scale-95 flex items-center gap-1.5"
@@ -158,6 +166,7 @@ export default function Navbar({ isLanding = false }) {
           isAuthenticated={isAuthenticated}
           handleLogout={handleLogout}
           user={user}
+          isLanding={isLanding}
         />
       </div>
     </header>
