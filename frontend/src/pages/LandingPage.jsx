@@ -219,8 +219,9 @@ export default function LandingPage() {
       <Navbar isLanding={true} />
 
       {/* Hero Section */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 pt-16 md:pt-24 pb-16 text-center flex flex-col items-center">
-        <div className="max-w-4xl mx-auto flex flex-col items-center">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
+        {/* Tagline & CTA Block (Centered & Symmetrical) */}
+        <div className="min-h-[82vh] flex flex-col justify-center items-center pt-28 sm:pt-36 pb-12 max-w-4xl mx-auto">
           {/* Title */}
           <motion.h1
             custom={0}
@@ -268,45 +269,47 @@ export default function LandingPage() {
           </motion.div>
         </div>
 
-        {/* Playground Selector Tabs */}
-        <motion.div
-          custom={2.5}
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          className="mt-16 flex flex-wrap gap-2.5 justify-center items-center relative z-10"
-        >
-          <span className="text-xs font-semibold text-white/40 uppercase tracking-wider mr-2">
-            Select a path to preview:
-          </span>
-          {[
-            { key: 'ml', label: 'Machine Learning Foundations' },
-            { key: 'react', label: 'React Web Apps' },
-            { key: 'writing', label: 'Creative Fiction Writing' }
-          ].map((item) => (
-            <button
-              key={item.key}
-              onClick={() => handleSubjectChange(item.key)}
-              className={`py-2 px-5 text-xs font-bold rounded-lg border transition duration-200 ${
-                activeSubject === item.key
-                  ? 'bg-accent/15 border-accent text-white shadow-[0_2px_12px_rgba(79,121,66,0.15)]'
-                  : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </motion.div>
+        {/* Playground Selector Tabs & Mockup Container (Pushed Below the Fold) */}
+        <div className="w-full flex flex-col items-center pb-24">
+          {/* Playground Selector Tabs */}
+          <motion.div
+            custom={2.5}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-wrap gap-2.5 justify-center items-center relative z-10"
+          >
+            <span className="text-xs font-semibold text-white/40 uppercase tracking-wider mr-2">
+              Select a path to preview:
+            </span>
+            {[
+              { key: 'ml', label: 'Machine Learning Foundations' },
+              { key: 'react', label: 'React Web Apps' },
+              { key: 'writing', label: 'Creative Fiction Writing' }
+            ].map((item) => (
+              <button
+                key={item.key}
+                onClick={() => handleSubjectChange(item.key)}
+                className={`py-2 px-5 text-xs font-bold rounded-lg border transition duration-200 ${
+                  activeSubject === item.key
+                    ? 'bg-accent/15 border-accent text-white shadow-[0_2px_12px_rgba(79,121,66,0.15)]'
+                    : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </motion.div>
 
-        {/* Interactive Workspace Mockup */}
-        <motion.div
-          id="interactive-demo"
-          custom={3}
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          className="mt-6 w-full max-w-5xl rounded-xl border border-white/10 bg-[#121211]/90 backdrop-blur-md shadow-2xl overflow-hidden text-left"
-        >
+          {/* Interactive Workspace Mockup */}
+          <motion.div
+            id="interactive-demo"
+            custom={3}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="mt-8 w-full max-w-5xl rounded-xl border border-white/10 bg-[#121211]/90 backdrop-blur-md shadow-2xl overflow-hidden text-left"
+          >
           {/* Mock Window Header */}
           <div className="px-5 py-3 border-b border-white/5 bg-black/40 flex justify-between items-center">
             <div className="flex gap-2">
@@ -502,7 +505,8 @@ export default function LandingPage() {
             </div>
           </div>
         </motion.div>
-      </main>
+      </div>
+    </main>
 
       {/* Features Section */}
       <motion.section 
@@ -658,9 +662,6 @@ export default function LandingPage() {
                 <span className="text-xs font-bold uppercase tracking-wider text-white/70">
                   Auto-Fetched Video Lectures
                 </span>
-                <span className="text-[10px] bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded font-mono">
-                  YouTube API
-                </span>
               </div>
               
               <div className="flex flex-col gap-4">
@@ -707,9 +708,6 @@ export default function LandingPage() {
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xs font-bold uppercase tracking-wider text-white/70">
                   Recommended Literature
-                </span>
-                <span className="text-[10px] bg-accent/10 text-accent border border-accent/20 px-2 py-0.5 rounded font-mono">
-                  Google Books API
                 </span>
               </div>
               
