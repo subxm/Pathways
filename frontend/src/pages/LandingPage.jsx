@@ -10,11 +10,94 @@ import Navbar from '../components/Navbar';
 import CanvasBackground from '../components/CanvasBackground';
 import { useAuthStore } from '../store/authStore';
 
+const curriculaData = {
+  ml: {
+    1: {
+      theme: "Mathematics & Python Setup",
+      objectives: ["Review linear algebra basics", "Configure NumPy & Pandas libraries", "Plot equations using Matplotlib"],
+      topics: [
+        { id: 1, title: "Linear Algebra & Matrices", desc: "Understanding vectors, matrix multiplication, and systems of linear equations.", url: "https://en.wikipedia.org/wiki/Linear_algebra" },
+        { id: 2, title: "Data Wrangling with NumPy", desc: "Performing vectorized operations on multi-dimensional matrices and arrays.", url: "https://en.wikipedia.org/wiki/NumPy" },
+        { id: 3, title: "Plotting & Visualization", desc: "Using Matplotlib and Seaborn to visualize data distributions and gradients.", url: "https://en.wikipedia.org/wiki/Matplotlib" }
+      ]
+    },
+    2: {
+      theme: "Supervised Learning Models",
+      objectives: ["Master linear & logistic regression", "Implement gradient descent", "Understand bias-variance tradeoffs"],
+      topics: [
+        { id: 4, title: "Linear Regression", desc: "Fitting a linear model using ordinary least squares regression metrics.", url: "https://en.wikipedia.org/wiki/Linear_regression" },
+        { id: 5, title: "Gradient Descent Algorithm", desc: "Optimizing cost function parameters using partial derivative slope calculations.", url: "https://en.wikipedia.org/wiki/Gradient_descent" }
+      ]
+    },
+    3: {
+      theme: "Neural Networks & Deep Learning",
+      objectives: ["Build multi-layer perceptrons", "Understand forward and backpropagation", "Design neural activation nodes"],
+      topics: [
+        { id: 6, title: "Multi-Layer Perceptrons", desc: "Structuring input, hidden, and output dense layers with nodes.", url: "https://en.wikipedia.org/wiki/Multilayer_perceptron" },
+        { id: 7, title: "Backpropagation math", desc: "Using chain-rule derivatives to calculate error gradients and update weights.", url: "https://en.wikipedia.org/wiki/Backpropagation" }
+      ]
+    }
+  },
+  react: {
+    1: {
+      theme: "React Core Concepts & JSX",
+      objectives: ["Understand declarative rendering", "Create reusable React components", "Master JSX expressions & syntax"],
+      topics: [
+        { id: 10, title: "Declarative Rendering", desc: "Understanding how React syncs the virtual DOM with actual browser nodes.", url: "https://react.dev/learn" },
+        { id: 11, title: "JSX Syntax Basics", desc: "Writing markup embedded in Javascript code using Babel transpiler rules.", url: "https://react.dev/learn/writing-markup-with-jsx" }
+      ]
+    },
+    2: {
+      theme: "State & Hooks Lifecycle",
+      objectives: ["Manage local state with useState", "Synchronize effects with useEffect", "Track references with useRef"],
+      topics: [
+        { id: 12, title: "useState Hook", desc: "Declaring state variables inside components to preserve values across renders.", url: "https://react.dev/reference/react/useState" },
+        { id: 13, title: "useEffect Hook", desc: "Executing side effects like data fetching or event listeners on mount.", url: "https://react.dev/reference/react/useEffect" }
+      ]
+    },
+    3: {
+      theme: "Global State & Performance",
+      objectives: ["Understand Context API", "Build state trees with Zustand", "Optimize rendering using React.memo"],
+      topics: [
+        { id: 14, title: "Zustand State Store", desc: "Setting up a clean external store to rotate actions and global variables.", url: "https://github.com/pmndrs/zustand" },
+        { id: 15, title: "React.memo & callbacks", desc: "Preventing unnecessary re-renders of child components using memoization.", url: "https://react.dev/reference/react/memo" }
+      ]
+    }
+  },
+  writing: {
+    1: {
+      theme: "Story Structure & Outlines",
+      objectives: ["Deconstruct the Three-Act structure", "Build compelling character bios", "Draft initial plotting outlines"],
+      topics: [
+        { id: 20, title: "Three-Act Structure", desc: "Structuring narrative setup, confrontation, and final resolution milestones.", url: "https://en.wikipedia.org/wiki/Three-act_structure" },
+        { id: 21, title: "Character Arc Blueprints", desc: "Designing motivations, flaws, and transformation milestones for characters.", url: "https://en.wikipedia.org/wiki/Character_arc" }
+      ]
+    },
+    2: {
+      theme: "Pacing & Show vs. Tell",
+      objectives: ["Master high-action scene pacing", "Convert exposition to sensory action", "Write sharp dialogue trees"],
+      topics: [
+        { id: 22, title: "Show, Don't Tell", desc: "Immersing readers in actions and feelings rather than summaries.", url: "https://en.wikipedia.org/wiki/Show,_don%27t_tell" },
+        { id: 23, title: "Dialogue beats & pacing", desc: "Adding character micro-actions to dialogue lines to build tension.", url: "https://en.wikipedia.org/wiki/Dialogue_in_writing" }
+      ]
+    },
+    3: {
+      theme: "Editing & Publishing Prep",
+      objectives: ["Prune unnecessary filler words", "Format manuscripts standardly", "Write query letters for agents"],
+      topics: [
+        { id: 24, title: "Manuscript Revision", desc: "Conducting developmental edits and line-by-line grammar polish.", url: "https://en.wikipedia.org/wiki/Editing" },
+        { id: 25, title: "Querying Literary Agents", desc: "Writing structured pitch letters and synopses to secure representation.", url: "https://en.wikipedia.org/wiki/Publishing" }
+      ]
+    }
+  }
+};
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
   
   // Interactive Timeline Mockup State
+  const [activeSubject, setActiveSubject] = useState('ml');
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [completedTopics, setCompletedTopics] = useState(new Set([1]));
   const [chatMessages, setChatMessages] = useState([
@@ -42,34 +125,17 @@ export default function LandingPage() {
     }
   ];
 
-  const mockCurriculum = {
-    1: {
-      theme: "Core Fundamentals & Setup",
-      objectives: ["Set up local environments", "Learn variables and basic data types", "Control execution flow"],
-      topics: [
-        { id: 1, title: "Variables & Types", desc: "Understanding how variables store memory and primitive types.", url: "https://en.wikipedia.org/wiki/Data_type" },
-        { id: 2, title: "Control Flow & Loops", desc: "Using if-else branches, for/while loops to control execution.", url: "https://en.wikipedia.org/wiki/Control_flow" },
-        { id: 3, title: "Functions & Scope", desc: "Organizing code into functional blocks and understanding lexical scope.", url: "https://en.wikipedia.org/wiki/Scope_(computer_science)" }
-      ]
-    },
-    2: {
-      theme: "Object-Oriented Programming",
-      objectives: ["Understand classes & objects", "Master inheritance", "Use interfaces for abstraction"],
-      topics: [
-        { id: 4, title: "Classes & Objects", desc: "Declaring blueprints and instantiating custom objects.", url: "https://en.wikipedia.org/wiki/Class_(computer_programming)" },
-        { id: 5, title: "Inheritance & Polymorphism", desc: "Reusing code hierarchies and overriding parent method actions.", url: "https://en.wikipedia.org/wiki/Polymorphism_(computer_science)" },
-        { id: 6, title: "Interfaces & Abstraction", desc: "Decoupling implementation using interfaces and abstract classes.", url: "https://en.wikipedia.org/wiki/Interface_(computing)" }
-      ]
-    },
-    3: {
-      theme: "Advanced Algorithms",
-      objectives: ["Understand Big-O space/time complexity", "Implement lists and maps", "Explore trees and recursion"],
-      topics: [
-        { id: 7, title: "Time Complexity & Big-O", desc: "Measuring run-time growth of operations as input scales.", url: "https://en.wikipedia.org/wiki/Big_O_notation" },
-        { id: 8, title: "HashMaps & Sets", desc: "Fast key-value pairings and duplicate element removal in O(1) time.", url: "https://en.wikipedia.org/wiki/Hash_table" }
-      ]
-    }
+  const handleSubjectChange = (subjKey) => {
+    setActiveSubject(subjKey);
+    setSelectedWeek(1);
+    const defaults = { ml: 1, react: 10, writing: 20 };
+    setCompletedTopics(new Set([defaults[subjKey]]));
+    setChatMessages([
+      { sender: 'assistant', content: `Hi! I am your Pathways guide for ${subjKey === 'ml' ? 'Machine Learning' : subjKey === 'react' ? 'React Development' : 'Creative Writing'}. Select any topic in the timeline, or ask me a question here to get started.` }
+    ]);
   };
+
+  const mockCurriculum = curriculaData[activeSubject];
 
   const handleTopicToggle = (id) => {
     const updated = new Set(completedTopics);
@@ -202,6 +268,36 @@ export default function LandingPage() {
           </motion.div>
         </div>
 
+        {/* Playground Selector Tabs */}
+        <motion.div
+          custom={2.5}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-16 flex flex-wrap gap-2.5 justify-center items-center relative z-10"
+        >
+          <span className="text-xs font-semibold text-white/40 uppercase tracking-wider mr-2">
+            Try a Template:
+          </span>
+          {[
+            { key: 'ml', label: 'Machine Learning Foundations' },
+            { key: 'react', label: 'React Web Apps' },
+            { key: 'writing', label: 'Creative Fiction Writing' }
+          ].map((item) => (
+            <button
+              key={item.key}
+              onClick={() => handleSubjectChange(item.key)}
+              className={`py-2 px-5 text-xs font-bold rounded-lg border transition duration-200 ${
+                activeSubject === item.key
+                  ? 'bg-accent/15 border-accent text-white shadow-[0_2px_12px_rgba(79,121,66,0.15)]'
+                  : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </motion.div>
+
         {/* Interactive Workspace Mockup */}
         <motion.div
           id="interactive-demo"
@@ -209,7 +305,7 @@ export default function LandingPage() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="mt-16 w-full max-w-5xl rounded-xl border border-white/10 bg-[#121211]/90 backdrop-blur-md shadow-2xl overflow-hidden text-left"
+          className="mt-6 w-full max-w-5xl rounded-xl border border-white/10 bg-[#121211]/90 backdrop-blur-md shadow-2xl overflow-hidden text-left"
         >
           {/* Mock Window Header */}
           <div className="px-5 py-3 border-b border-white/5 bg-black/40 flex justify-between items-center">
@@ -219,7 +315,7 @@ export default function LandingPage() {
               <span className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
             <div className="text-[11px] font-mono text-white/30 select-none">
-              workspace/machine-learning-beginner
+              workspace/{activeSubject === 'ml' ? 'machine-learning-beginner' : activeSubject === 'react' ? 'react-web-apps' : 'creative-fiction-writing'}
             </div>
             <div className="w-16" />
           </div>
@@ -510,6 +606,306 @@ export default function LandingPage() {
             <h3 className="text-base font-bold mb-2">Progress Checklists</h3>
             <p className="text-xs text-white/50 leading-relaxed font-light">
               Interactive checkboxes capture your completions locally, keeping your dashboard updated and maintaining momentum through your path.
+            </p>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Option A: Curated Subject Library Grid */}
+      <motion.section 
+        id="library" 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5"
+      >
+        <div className="text-center mb-16">
+          <span className="text-xs font-semibold text-accent uppercase tracking-wider">
+            Subject Library
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
+            Explore Popular Pathways
+          </h2>
+          <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
+            Select a curated subject template below to preview it instantly in the interactive workspace above.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: Software Engineering */}
+          <div 
+            onClick={() => {
+              handleSubjectChange('react');
+              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
+              activeSubject === 'react' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
+            }`}
+          >
+            <div>
+              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+                <Cpu size={22} />
+              </div>
+              <h3 className="text-lg font-bold mb-2">React Web Apps</h3>
+              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
+                Master virtual DOM structures, React hook lifecycles, and modern global state engines like Zustand.
+              </p>
+            </div>
+            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
+              {activeSubject === 'react' ? 'Active Preview • Scroll Up' : 'Load Template →'}
+            </div>
+          </div>
+
+          {/* Card 2: Data Science & AI */}
+          <div 
+            onClick={() => {
+              handleSubjectChange('ml');
+              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
+              activeSubject === 'ml' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
+            }`}
+          >
+            <div>
+              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+                <Database size={22} />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Machine Learning Foundations</h3>
+              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
+                Explore regression math, gradient descent calculations, and multi-layer deep neural networks.
+              </p>
+            </div>
+            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
+              {activeSubject === 'ml' ? 'Active Preview • Scroll Up' : 'Load Template →'}
+            </div>
+          </div>
+
+          {/* Card 3: Creative Arts */}
+          <div 
+            onClick={() => {
+              handleSubjectChange('writing');
+              document.getElementById('interactive-demo')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`p-6 bg-white/5 border rounded-xl cursor-pointer transition duration-300 hover:bg-white/[0.02] flex flex-col justify-between ${
+              activeSubject === 'writing' ? 'border-accent shadow-[0_4px_20px_rgba(79,121,66,0.15)]' : 'border-white/5 hover:border-accent/40'
+            }`}
+          >
+            <div>
+              <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent w-fit mb-6">
+                <Sparkles size={22} />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Creative Fiction Writing</h3>
+              <p className="text-xs text-white/50 leading-relaxed font-light mb-4">
+                Deconstruct character arcs, story setup structure, dialogue beats, and literary query techniques.
+              </p>
+            </div>
+            <div className="text-[10px] uppercase font-bold text-accent tracking-wider">
+              {activeSubject === 'writing' ? 'Active Preview • Scroll Up' : 'Load Template →'}
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Option B: Before & After Contrast Section */}
+      <motion.section 
+        id="comparison" 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5"
+      >
+        <div className="text-center mb-16">
+          <span className="text-xs font-semibold text-accent uppercase tracking-wider">
+            Study Comparison
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
+            The Studying Upgrade
+          </h2>
+          <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
+            Compare the struggle of traditional self-directed research against the consolidated Pathways model.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Traditional Way */}
+          <div className="p-8 bg-red-950/10 border border-red-500/10 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div className="w-fit px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-400 rounded-full text-[10px] font-bold uppercase tracking-wider mb-6">
+                Traditional Studying
+              </div>
+              <h3 className="text-xl font-bold mb-4 text-white">Tab Overload & Friction</h3>
+              <ul className="flex flex-col gap-3.5">
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>Scattering bookmarks across dozens of blogs, wikis, and documentation tabs.</span>
+                </li>
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>Wasting hours weeding out outdated or irrelevant YouTube lecture playlists.</span>
+                </li>
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>No feedback loop when code breaks or conceptual definitions feel confusing.</span>
+                </li>
+                <li className="text-xs text-white/60 flex items-start gap-2.5">
+                  <span className="text-red-500 font-bold mt-0.5">✕</span>
+                  <span>Losing track of progress and motivation with static, non-interactive checklists.</span>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-8 text-xs text-red-400/50 font-mono">
+              Result: Constant context-switching, low retention.
+            </div>
+          </div>
+
+          {/* Pathways Way */}
+          <div className="p-8 bg-emerald-950/10 border border-accent/20 rounded-2xl flex flex-col justify-between shadow-[0_4px_24px_rgba(79,121,66,0.05)]">
+            <div>
+              <div className="w-fit px-3 py-1 bg-accent/20 border border-accent/30 text-accent rounded-full text-[10px] font-bold uppercase tracking-wider mb-6">
+                The Pathways Way
+              </div>
+              <h3 className="text-xl font-bold mb-4 text-white">Centralized AI Classrooms</h3>
+              <ul className="flex flex-col gap-3.5">
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>One single structured timeline mapping out your entire learning journey.</span>
+                </li>
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>Parallel resource fetching brings targeted lectures and books directly to your desk.</span>
+                </li>
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>Context-aware Gemini assistant streams quizzes, syntax checks, and debugs.</span>
+                </li>
+                <li className="text-xs text-white/80 flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">✓</span>
+                  <span>Interactive checklists persist state, showing your learning speed grow.</span>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-8 text-xs text-accent/80 font-mono">
+              Result: Zero friction, accelerated mastery.
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Option C: Featured Resources Showcase */}
+      <motion.section 
+        id="resources" 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5"
+      >
+        <div className="text-center mb-16">
+          <span className="text-xs font-semibold text-accent uppercase tracking-wider">
+            Curated Resources
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
+            Enriched Learning Materials
+          </h2>
+          <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
+            Every step is enriched with high-quality learning materials pulled in parallel to reinforce visual and textual studying.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Lecture Videos Mockup */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/70">
+                  Auto-Fetched Video Lectures
+                </span>
+                <span className="text-[10px] bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded font-mono">
+                  YouTube API
+                </span>
+              </div>
+              
+              <div className="flex flex-col gap-4">
+                {/* Mock Video Item 1 */}
+                <div className="p-3 bg-black/30 border border-white/5 rounded-xl flex gap-4 items-center">
+                  <div className="w-24 aspect-video bg-neutral-800 rounded-lg flex items-center justify-center relative overflow-hidden shrink-0 border border-white/5">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent opacity-50" />
+                    <Play size={16} className="text-accent fill-accent/20" />
+                    <span className="absolute bottom-1 right-1 bg-black/80 px-1 rounded text-[8px] font-mono text-white/80">
+                      14:22
+                    </span>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white leading-tight">Linear Algebra Foundations: Matrices & Transforms</h4>
+                    <p className="text-[10px] text-white/40 mt-1">3Blue1Brown • 2.4M views</p>
+                  </div>
+                </div>
+
+                {/* Mock Video Item 2 */}
+                <div className="p-3 bg-black/30 border border-white/5 rounded-xl flex gap-4 items-center">
+                  <div className="w-24 aspect-video bg-neutral-800 rounded-lg flex items-center justify-center relative overflow-hidden shrink-0 border border-white/5">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent opacity-50" />
+                    <Play size={16} className="text-accent fill-accent/20" />
+                    <span className="absolute bottom-1 right-1 bg-black/80 px-1 rounded text-[8px] font-mono text-white/80">
+                      28:45
+                    </span>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white leading-tight">NumPy Array Operations & Indexing Tutorial</h4>
+                    <p className="text-[10px] text-white/40 mt-1">freeCodeCamp • 180k views</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-[11px] text-white/40 mt-6 leading-relaxed">
+              Videos are queried dynamically matching week themes and sorted by relevance and view count to guarantee high-quality visual aids.
+            </p>
+          </div>
+
+          {/* Reference Books Mockup */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-2xl flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/70">
+                  Recommended Literature
+                </span>
+                <span className="text-[10px] bg-accent/10 text-accent border border-accent/20 px-2 py-0.5 rounded font-mono">
+                  Google Books API
+                </span>
+              </div>
+              
+              <div className="flex flex-col gap-4">
+                {/* Mock Book Item 1 */}
+                <div className="p-3 bg-black/30 border border-white/5 rounded-xl flex gap-4 items-center">
+                  <div className="w-12 h-16 bg-neutral-800 rounded-md flex items-center justify-center shrink-0 border border-white/5 relative overflow-hidden">
+                    <div className="absolute inset-x-0 top-0 h-4 bg-accent/20" />
+                    <span className="text-[7px] font-mono text-white/40 text-center px-1 font-bold">PYTHON ML</span>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white leading-tight">Python Machine Learning: Machine Learning & Deep Learning</h4>
+                    <p className="text-[10px] text-white/40 mt-1">Sebastian Raschka • Packt Publishing</p>
+                  </div>
+                </div>
+
+                {/* Mock Book Item 2 */}
+                <div className="p-3 bg-black/30 border border-white/5 rounded-xl flex gap-4 items-center">
+                  <div className="w-12 h-16 bg-neutral-800 rounded-md flex items-center justify-center shrink-0 border border-white/5 relative overflow-hidden">
+                    <div className="absolute inset-x-0 top-0 h-4 bg-accent/20" />
+                    <span className="text-[7px] font-mono text-white/40 text-center px-1 font-bold">MATH FOR ML</span>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white leading-tight">Mathematics for Machine Learning</h4>
+                    <p className="text-[10px] text-white/40 mt-1">Marc Peter Deisenroth • Cambridge Press</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-[11px] text-white/40 mt-6 leading-relaxed">
+              Google Books integration retrieves academic references, textbook breakdowns, and publisher literature for deep-dive theoretical support.
             </p>
           </div>
         </div>

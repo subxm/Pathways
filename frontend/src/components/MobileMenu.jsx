@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, LogOut, LayoutDashboard, User, Zap, Compass, HelpCircle } from 'lucide-react';
+import { X, LogOut, LayoutDashboard, User, Zap, Compass, HelpCircle, Library, ArrowLeftRight, BookOpen } from 'lucide-react';
 
 export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLogout, user }) {
   const backdropVariants = {
@@ -105,6 +105,36 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                   </motion.div>
                   <motion.div variants={linkVariants(1)} initial="hidden" animate="visible">
                     <a 
+                      href="#library" 
+                      onClick={onClose}
+                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                    >
+                      <Library size={20} className="text-accent" />
+                      Library
+                    </a>
+                  </motion.div>
+                  <motion.div variants={linkVariants(2)} initial="hidden" animate="visible">
+                    <a 
+                      href="#comparison" 
+                      onClick={onClose}
+                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                    >
+                      <ArrowLeftRight size={20} className="text-accent" />
+                      Comparison
+                    </a>
+                  </motion.div>
+                  <motion.div variants={linkVariants(3)} initial="hidden" animate="visible">
+                    <a 
+                      href="#resources" 
+                      onClick={onClose}
+                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                    >
+                      <BookOpen size={20} className="text-accent" />
+                      Resources
+                    </a>
+                  </motion.div>
+                  <motion.div variants={linkVariants(4)} initial="hidden" animate="visible">
+                    <a 
                       href="#how-it-works" 
                       onClick={onClose}
                       className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
@@ -113,7 +143,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       How It Works
                     </a>
                   </motion.div>
-                  <motion.div variants={linkVariants(2)} initial="hidden" animate="visible">
+                  <motion.div variants={linkVariants(5)} initial="hidden" animate="visible">
                     <a 
                       href="#faq" 
                       onClick={onClose}
