@@ -45,10 +45,22 @@ export default function Navbar({ isLanding = false }) {
         ) : (
           <>
             <a 
+              href="#features" 
+              className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+            >
+              Features
+            </a>
+            <a 
               href="#how-it-works" 
               className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
             >
               How It Works
+            </a>
+            <a 
+              href="#faq" 
+              className={`text-sm font-medium transition-opacity hover:opacity-70 ${isLanding ? 'text-white' : 'text-text'}`}
+            >
+              FAQ
             </a>
           </>
         )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, LogOut, LayoutDashboard, BookOpen, User } from 'lucide-react';
+import { X, LogOut, LayoutDashboard, User, Zap, Compass, HelpCircle } from 'lucide-react';
 
 export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLogout, user }) {
   const backdropVariants = {
@@ -95,12 +95,32 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                 <>
                   <motion.div variants={linkVariants(0)} initial="hidden" animate="visible">
                     <a 
+                      href="#features" 
+                      onClick={onClose}
+                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                    >
+                      <Zap size={20} className="text-accent" />
+                      Features
+                    </a>
+                  </motion.div>
+                  <motion.div variants={linkVariants(1)} initial="hidden" animate="visible">
+                    <a 
                       href="#how-it-works" 
                       onClick={onClose}
                       className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
                     >
-                      <BookOpen size={20} />
+                      <Compass size={20} className="text-accent" />
                       How It Works
+                    </a>
+                  </motion.div>
+                  <motion.div variants={linkVariants(2)} initial="hidden" animate="visible">
+                    <a 
+                      href="#faq" 
+                      onClick={onClose}
+                      className="flex items-center gap-3 text-xl font-semibold hover:opacity-75 transition-opacity"
+                    >
+                      <HelpCircle size={20} className="text-accent" />
+                      FAQ
                     </a>
                   </motion.div>
                 </>
@@ -119,7 +139,7 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                       onClose();
                       handleLogout();
                     }}
-                    className="w-full py-3.5 bg-neutral-800 text-white text-sm font-semibold rounded-full hover:bg-neutral-900 transition flex justify-center items-center gap-2"
+                    className="w-full py-3.5 bg-neutral-800 text-white text-sm font-semibold rounded-lg hover:bg-neutral-900 transition flex justify-center items-center gap-2"
                   >
                     <LogOut size={16} />
                     Sign Out
@@ -130,14 +150,14 @@ export default function MobileMenu({ isOpen, onClose, isAuthenticated, handleLog
                   <Link
                     to="/login"
                     onClick={onClose}
-                    className="w-full py-3.5 bg-[#F2F2EE] text-center text-[#192837] text-sm font-semibold rounded-full hover:bg-neutral-200 transition"
+                    className="w-full py-3.5 bg-[#F2F2EE] text-center text-[#192837] text-sm font-semibold rounded-lg hover:bg-neutral-200 transition"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/signup"
                     onClick={onClose}
-                    className="w-full py-3.5 bg-accent text-center text-white text-sm font-semibold rounded-full hover:shadow-md transition"
+                    className="w-full py-3.5 bg-accent text-center text-white text-sm font-semibold rounded-lg hover:shadow-md transition"
                   >
                     Start Learning
                   </Link>

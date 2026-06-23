@@ -21,6 +21,26 @@ export default function LandingPage() {
     { sender: 'assistant', content: 'Hi! I am your Pathways guide. Select any topic in the timeline, or ask me a question here to get started.' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const faqs = [
+    {
+      q: "How does Pathways generate these learning curriculums?",
+      a: "Pathways sends structured prompt parameters to the Gemini API which parses your subject, level, and goals. It generates a comprehensive JSON response detailing weekly topics, objectives, and official reference documents."
+    },
+    {
+      q: "Do I need my own developer API keys to preview the platform?",
+      a: "No! Pathways runs with a robust backend fallback architecture. If downstream API keys are not supplied by the developer, the platform falls back to pre-configured high-fidelity tracks (like React or Machine Learning) and streams simulated interactive study help in real time."
+    },
+    {
+      q: "How does the assistant stream interactive answers?",
+      a: "The assistant uses a reactive stream connected to our downstream chat-service, processing prompt contexts on-the-fly to clarify code syntax, answer theoretical questions, or generate dynamic quizzes."
+    },
+    {
+      q: "Can I save my progress and track multiple subjects?",
+      a: "Yes! Once signed in, all your custom generated learning paths and checkboxes are stored securely in our Neon Postgres database. You can manage multiple paths concurrently directly from your dashboard."
+    }
+  ];
 
   const mockCurriculum = {
     1: {
@@ -392,7 +412,13 @@ export default function LandingPage() {
       </main>
 
       {/* Feature Stats Grid */}
-      <section className="relative z-10 w-full max-w-6xl mx-auto px-6 py-12 border-t border-white/5">
+      <motion.section 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-12 border-t border-white/5"
+      >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div className="p-4 bg-white/5 border border-white/5 rounded-xl">
             <h4 className="text-2xl font-bold font-heading text-accent">100%</h4>
@@ -419,10 +445,85 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
-      </section>
+      </motion.section>
+
+      {/* Features Section */}
+      <motion.section 
+        id="features" 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5"
+      >
+        <div className="text-center mb-16">
+          <span className="text-xs font-semibold text-accent uppercase tracking-wider">
+            Key Features
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
+            Engineered for Deep Learning
+          </h2>
+          <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
+            An all-in-one AI study platform designed to simplify complex subjects.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Feature 1 */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-start">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
+              <Sparkles size={20} />
+            </div>
+            <h3 className="text-base font-bold mb-2">Smart JSON Timelines</h3>
+            <p className="text-xs text-white/50 leading-relaxed font-light">
+              Enter any discipline and watch our engine partition complex goals into beautifully structured, bite-sized weekly milestones.
+            </p>
+          </div>
+
+          {/* Feature 2 */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-start">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
+              <MessageSquare size={20} />
+            </div>
+            <h3 className="text-base font-bold mb-2">Contextual AI Co-Pilot</h3>
+            <p className="text-xs text-white/50 leading-relaxed font-light">
+              Got stuck on a tricky module? Slide open the context-aware Gemini study guide to run diagnostic quizzes or explain code blocks.
+            </p>
+          </div>
+
+          {/* Feature 3 */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-start">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
+              <BookOpen size={20} />
+            </div>
+            <h3 className="text-base font-bold mb-2">Media Enrichment</h3>
+            <p className="text-xs text-white/50 leading-relaxed font-light">
+              Automatically crawls, filters, and binds high-quality YouTube lecture videos and Google Books references directly to corresponding steps.
+            </p>
+          </div>
+
+          {/* Feature 4 */}
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-start">
+            <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
+              <CheckCircle2 size={20} />
+            </div>
+            <h3 className="text-base font-bold mb-2">Progress Checklists</h3>
+            <p className="text-xs text-white/50 leading-relaxed font-light">
+              Interactive checkboxes capture your completions locally, keeping your dashboard updated and maintaining momentum through your path.
+            </p>
+          </div>
+        </div>
+      </motion.section>
 
       {/* Architecture / How It Works Section */}
-      <section id="how-it-works" className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5">
+      <motion.section 
+        id="how-it-works" 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 border-t border-white/5"
+      >
         <div className="text-center mb-16">
           <span className="text-xs font-semibold text-accent uppercase tracking-wider">
             Robust Design Principles
@@ -437,7 +538,7 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Card 1 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col items-center text-center">
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
             <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
               <Compass size={22} />
             </div>
@@ -448,7 +549,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 2 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col items-center text-center">
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
             <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
               <Layers size={22} />
             </div>
@@ -459,7 +560,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 3 */}
-          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 transition duration-300 flex flex-col items-center text-center">
+          <div className="p-6 bg-white/5 border border-white/5 rounded-xl hover:border-accent/40 hover:bg-white/[0.02] transition duration-300 flex flex-col items-center text-center">
             <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent mb-6">
               <Award size={22} />
             </div>
@@ -469,9 +570,93 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
-      </section>
+      </motion.section>
 
+      {/* FAQ Section */}
+      <motion.section 
+        id="faq" 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-4xl mx-auto px-6 py-20 border-t border-white/5"
+      >
+        <div className="text-center mb-16">
+          <span className="text-xs font-semibold text-accent uppercase tracking-wider">
+            FAQ
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl tracking-tight font-extrabold mt-2">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-sm text-white/50 max-w-lg mx-auto mt-3 font-light">
+            Everything you need to know about setting up and using the Pathways platform.
+          </p>
+        </div>
 
+        <div className="flex flex-col gap-4">
+          {faqs.map((faq, index) => {
+            const isOpen = openFaq === index;
+            return (
+              <div 
+                key={index} 
+                className="bg-white/5 border border-white/5 rounded-xl overflow-hidden transition-all duration-300"
+              >
+                <button
+                  onClick={() => setOpenFaq(isOpen ? null : index)}
+                  className="w-full text-left p-6 flex justify-between items-center hover:bg-white/[0.02] transition"
+                >
+                  <span className="text-sm sm:text-base font-bold text-white/90">
+                    {faq.q}
+                  </span>
+                  <ChevronRight 
+                    size={18} 
+                    className={`text-white/60 transition-transform duration-300 ${isOpen ? 'rotate-90 text-accent' : ''}`}
+                  />
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    >
+                      <div className="p-6 pt-0 border-t border-white/5 text-xs sm:text-sm text-white/60 leading-relaxed font-light">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+      </motion.section>
+
+      {/* Bottom CTA Section */}
+      <motion.section 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-5xl mx-auto px-6 pb-20"
+      >
+        <div className="relative overflow-hidden p-8 md:p-12 bg-gradient-to-br from-accent/15 via-white/[0.02] to-transparent border border-white/5 rounded-2xl text-center flex flex-col items-center">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(79,121,66,0.15),transparent_60%)] pointer-events-none" />
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-tight font-extrabold text-white max-w-xl leading-tight">
+            Ready to accelerate your learning?
+          </h2>
+          <p className="mt-4 text-xs sm:text-sm text-white/50 max-w-md font-light leading-relaxed">
+            Create structured weekly milestones for any topic, get parallel materials, and study with an active AI guide.
+          </p>
+          <button
+            onClick={handleCtaClick}
+            className="mt-8 py-3.5 px-8 bg-accent text-white text-sm font-semibold rounded-lg border border-white/5 shadow-[0_4px_24px_rgba(79,121,66,0.25)] transition-all duration-300 hover:scale-[1.03] hover:brightness-[1.15] active:scale-[0.97] focus:outline-none"
+          >
+            Start Learning Free
+          </button>
+        </div>
+      </motion.section>
 
       {/* Footer */}
       <footer className="relative z-10 py-8 border-t border-white/5 text-center text-xs text-white/30">
