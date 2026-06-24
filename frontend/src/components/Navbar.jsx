@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, LayoutDashboard, User, ChevronLeft, Route } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, User, ChevronLeft, Route, SunMoon, Sun, Moon } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import MobileMenu from './MobileMenu';
 
@@ -9,6 +9,7 @@ export default function Navbar({ isLanding = false, isDashboard = false }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isThemeSubOpen, setIsThemeSubOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -54,43 +55,49 @@ export default function Navbar({ isLanding = false, isDashboard = false }) {
         
         <div className="h-px bg-neutral-200 dark:bg-white/5 my-1" />
         
-        {/* Theme Segmented Control */}
-        <div className="px-4 py-2 flex flex-col gap-1.5" onClick={(e) => e.stopPropagation()}>
-          <span className="text-[9px] uppercase tracking-wider font-bold text-neutral-400 dark:text-white/35">
-            Theme
-          </span>
-          <div className="flex bg-neutral-100 dark:bg-black/40 border border-neutral-200/60 dark:border-white/5 rounded-lg p-0.5">
-            <button
-              onClick={() => handleThemeChange('light')}
-              className={`flex-1 text-[10px] font-bold py-1 rounded text-center transition ${
-                theme === 'light'
-                  ? 'bg-accent text-white shadow-sm'
-                  : 'text-neutral-500 dark:text-white/60 hover:text-neutral-800 dark:hover:text-white'
-              }`}
-            >
-              Light
-            </button>
-            <button
-              onClick={() => handleThemeChange('dark')}
-              className={`flex-1 text-[10px] font-bold py-1 rounded text-center transition ${
-                theme === 'dark'
-                  ? 'bg-accent text-white shadow-sm'
-                  : 'text-neutral-500 dark:text-white/60 hover:text-neutral-800 dark:hover:text-white'
-              }`}
-            >
-              Dark
-            </button>
-            <button
-              onClick={() => handleThemeChange('system')}
-              className={`flex-1 text-[10px] font-bold py-1 rounded text-center transition ${
-                theme === 'system'
-                  ? 'bg-accent text-white shadow-sm'
-                  : 'text-neutral-500 dark:text-white/60 hover:text-neutral-800 dark:hover:text-white'
-              }`}
-            >
-              System
-            </button>
-          </div>
+        {/* Theme Menu Item with hover/click flyout */}
+        <div 
+          className="relative group/theme"
+          onMouseEnter={() => setIsThemeSubOpen(true)}
+          onMouseLeave={() => setIsThemeSubOpen(false)}
+        >
+          <button
+            onClick={() => setIsThemeSubOpen(!isThemeSubOpen)}
+            className="w-full flex items-center justify-between px-4 py-2 text-sm text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white transition font-medium text-left focus:outline-none"
+          >
+            <div className="flex items-center gap-2.5">
+              <SunMoon size={16} className="text-neutral-400 dark:text-white/60" />
+              <span>Theme</span>
+            </div>
+            <ChevronLeft size={14} className="opacity-50 text-neutral-400 dark:text-white/40" />
+          </button>
+          
+          {isThemeSubOpen && (
+            <div className="absolute right-full top-0 mr-1 w-32 bg-white dark:bg-[#121211] border border-neutral-200 dark:border-white/10 rounded-xl shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-right-2 duration-150">
+              <button
+                onClick={() => {
+                  handleThemeChange('light');
+                  setIsDropdownOpen(false);
+                  setIsThemeSubOpen(false);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-xs text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white transition font-medium text-left"
+              >
+                <Sun size={14} className={theme === 'light' ? 'text-accent' : 'text-neutral-400 dark:text-white/50'} />
+                <span className={theme === 'light' ? 'text-accent font-semibold' : ''}>Light</span>
+              </button>
+              <button
+                onClick={() => {
+                  handleThemeChange('dark');
+                  setIsDropdownOpen(false);
+                  setIsThemeSubOpen(false);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-xs text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white transition font-medium text-left"
+              >
+                <Moon size={14} className={theme === 'dark' ? 'text-accent' : 'text-neutral-400 dark:text-white/50'} />
+                <span className={theme === 'dark' ? 'text-accent font-semibold' : ''}>Dark</span>
+              </button>
+            </div>
+          )}
         </div>
         
         <div className="h-px bg-neutral-200 dark:bg-white/5 my-1" />
@@ -121,6 +128,7 @@ export default function Navbar({ isLanding = false, isDashboard = false }) {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
+        setIsThemeSubOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
