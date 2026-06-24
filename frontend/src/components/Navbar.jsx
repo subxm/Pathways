@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, LayoutDashboard, User, ChevronLeft } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, User, ChevronLeft, Route } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import MobileMenu from './MobileMenu';
 
-export default function Navbar({ isLanding = false }) {
+export default function Navbar({ isLanding = false, isDashboard = false }) {
   const { isAuthenticated, logoutUser, user } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -182,17 +182,35 @@ export default function Navbar({ isLanding = false }) {
             />
           </>
         ) : (
-          /* Non-landing pages: Render Back to Dashboard on the left, profile on the right */
+          /* Non-landing pages: Render Back to Dashboard or Logo on the left, profile on the right */
           isAuthenticated && (
             <>
-              {/* Back to Dashboard (Left) */}
-              <Link 
-                to="/dashboard" 
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/5 hover:border-accent/40 rounded-lg text-xs font-semibold text-white/80 hover:text-white transition backdrop-blur-sm shadow-md"
-              >
-                <ChevronLeft size={16} className="text-accent" />
-                <span>Back to Dashboard</span>
-              </Link>
+              {isDashboard ? (
+                /* Branding Logo (Left) */
+                <Link 
+                  to="/dashboard" 
+                  className="flex items-center gap-2.5 group focus:outline-none z-10"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/25 flex items-center justify-center text-accent group-hover:scale-105 group-hover:border-accent/50 transition">
+                    <Route size={16} className="text-accent" />
+                  </div>
+                  <span 
+                    className="font-heading text-lg sm:text-xl tracking-tight text-white group-hover:text-accent transition-colors"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    Pathways
+                  </span>
+                </Link>
+              ) : (
+                /* Back to Dashboard (Left) */
+                <Link 
+                  to="/dashboard" 
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/5 hover:border-accent/40 rounded-lg text-xs font-semibold text-white/80 hover:text-white transition backdrop-blur-sm shadow-md"
+                >
+                  <ChevronLeft size={16} className="text-accent" />
+                  <span>Back to Dashboard</span>
+                </Link>
+              )}
 
               {/* Profile Avatar (Right) */}
               <div className="relative" ref={dropdownRef}>

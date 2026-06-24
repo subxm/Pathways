@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, BookOpen, Flame, CheckCircle, ArrowRight, User, LogOut, Search, Download, FileText, X } from 'lucide-react';
 import { usePathStore } from '../store/pathStore';
 import { useAuthStore } from '../store/authStore';
+import Navbar from '../components/Navbar';
 
 export default function DashboardPage() {
   const { paths, fetchPaths, isLoadingPaths } = usePathStore();
@@ -11,28 +12,15 @@ export default function DashboardPage() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'active', 'completed'
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortBy, setSortBy] = useState('created-desc');
   const [isScratchpadOpen, setIsScratchpadOpen] = useState(false);
   const [scratchpadNote, setScratchpadNote] = useState(() => {
     return localStorage.getItem('pathways_scratchpad') || '';
   });
 
-  const dropdownRef = useRef(null);
-
   useEffect(() => {
     fetchPaths();
   }, [fetchPaths]);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   // Statistics calculations
   const totalTopicsDone = paths.reduce((acc, curr) => acc + curr.completedTopicsCount, 0);
@@ -142,47 +130,8 @@ export default function DashboardPage() {
 
   return (
     <div className="relative min-h-screen bg-[#0D0D0C] text-white flex flex-col font-body overflow-x-hidden">
-      <main className="relative z-10 flex-grow w-full px-8 md:px-12 pb-20">
-        
-        {/* Sleek Workspace Header */}
-        <div className="flex justify-end items-center py-6 border-b border-white/5 mb-10 relative">
-          
-          {/* Profile Dropdown Container */}
-          <div className="relative" ref={dropdownRef}>
-            <button 
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-9 h-9 rounded-full bg-white/5 border border-white/5 hover:border-accent flex items-center justify-center text-white/80 hover:text-white transition hover:bg-white/10 focus:outline-none"
-              title="Profile Options"
-            >
-              <User size={18} />
-            </button>
-
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-[#121211] border border-white/10 rounded-xl shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                <Link
-                  to="/profile"
-                  onClick={() => setIsDropdownOpen(false)}
-                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition font-medium"
-                >
-                  <User size={16} className="text-white/60" />
-                  <span>Profile</span>
-                </Link>
-                <div className="h-px bg-white/5 my-1" />
-                <button
-                  onClick={async () => {
-                    setIsDropdownOpen(false);
-                    await logoutUser();
-                    navigate('/');
-                  }}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:text-red-400 hover:bg-red-950/20 transition font-medium text-left"
-                >
-                  <LogOut size={16} />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+      <Navbar isDashboard={true} />
+      <main className="relative z-10 flex-grow w-full px-8 md:px-12 pb-20 mt-16 pt-6">
 
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8">
           <div>
@@ -388,21 +337,12 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-3">
                         <button
                           onClick={(e) => handleDownloadSyllabus(e, path)}
-                          className="p-1.5 rounded-lg bg-white/5 hover:bg-accent/25 hover:text-accent border border-white/5 text-white/60 transition"
+                          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white/5 hover:bg-accent/25 hover:text-accent border border-white/5 text-white/75 hover:text-white transition-all duration-200 text-xs font-semibold"
                           title="Download Syllabus (.md)"
                         >
-                          <Download size={13} />
+                          <Download size={14} />
+                          <span>Download Syllabus</span>
                         </button>
-
-                        {!isPathCompleted ? (
-                          <span className="flex items-center gap-1 bg-accent/15 text-accent font-bold px-2.5 py-1 rounded-lg hover:bg-accent hover:text-white transition duration-200 text-[10px]">
-                            Resume Learning
-                          </span>
-                        ) : (
-                          <span className="flex items-center gap-1 text-accent font-semibold group-hover:translate-x-1 transition duration-200">
-                            Open Workspace <ArrowRight size={12} />
-                          </span>
-                        )}
                       </div>
                     </div>
                   </Link>
