@@ -16,8 +16,20 @@
     
     <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- Theme Initializer -->
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-[#F9F9F8] text-[#192837] antialiased">
+  <body class="bg-[#F9F9F8] text-[#192837] dark:bg-[#0D0D0C] dark:text-white antialiased">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

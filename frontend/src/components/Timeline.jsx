@@ -71,17 +71,17 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
               </div>
 
               {/* Week Card */}
-              <div className="bg-white/[0.02] border border-white/5 backdrop-blur-sm rounded-xl overflow-hidden">
+              <div className="bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 backdrop-blur-sm rounded-xl overflow-hidden">
                 {/* Header */}
                 <button
                   onClick={() => toggleWeekExpand(week.id)}
-                  className="w-full px-5 py-4 flex justify-between items-center text-left hover:bg-white/[0.03] transition focus:outline-none"
+                  className="w-full px-5 py-4 flex justify-between items-center text-left hover:bg-neutral-50 dark:hover:bg-white/[0.03] transition focus:outline-none"
                 >
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-accent mb-0.5 block">
                       Week {week.weekNumber}
                     </span>
-                    <h3 className="font-heading text-lg sm:text-xl tracking-tight leading-tight text-white">
+                    <h3 className="font-heading text-lg sm:text-xl tracking-tight leading-tight text-neutral-800 dark:text-white">
                       {week.theme}
                     </h3>
                   </div>
@@ -90,18 +90,18 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
 
                 {/* Body Content */}
                 {expanded && (
-                  <div className="px-5 pb-5 border-t border-white/5 pt-4">
+                  <div className="px-5 pb-5 border-t border-neutral-200 dark:border-t-white/5 pt-4">
                     {/* Objectives */}
                     {week.objectivesList && week.objectivesList.length > 0 && (
                       <div className="mb-5">
-                        <span className="text-[10px] font-bold uppercase tracking-wider opacity-50 block mb-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-white/40 block mb-2">
                           Objectives
                         </span>
                         <ul className="flex flex-wrap gap-2">
                           {week.objectivesList.map((obj, i) => (
                             <li 
                               key={i} 
-                              className="text-xs bg-white/5 border border-white/5 px-3 py-1.5 rounded-full text-white/80"
+                              className="text-xs bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 px-3 py-1.5 rounded-full text-neutral-600 dark:text-white/80"
                             >
                               {obj}
                             </li>
@@ -112,7 +112,7 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
 
                     {/* Topics List */}
                     <div className="flex flex-col gap-3">
-                      <span className="text-[10px] font-bold uppercase tracking-wider opacity-50 block">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-white/40 block">
                         Topics
                       </span>
                       
@@ -125,8 +125,8 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
                             key={topic.id}
                             className={`border rounded-lg transition duration-200 ${
                               isTopicActive 
-                                ? 'bg-white/5 border-white/10 text-white' 
-                                : 'bg-white/[0.01] border-white/5 hover:bg-white/[0.03] text-white/80'
+                                ? 'bg-neutral-100 dark:bg-white/5 border-neutral-300 dark:border-white/10 text-neutral-800 dark:text-white font-medium' 
+                                : 'bg-white dark:bg-white/[0.01] border-neutral-200 dark:border-white/5 hover:bg-neutral-50 dark:hover:bg-white/[0.03] text-neutral-700 dark:text-white/80'
                             }`}
                           >
                             {/* Topic Row */}
@@ -140,7 +140,7 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
                                    <div className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${
                                      isTopicCompleted 
                                        ? 'bg-accent border-accent text-white shadow-lg shadow-accent/25 scale-105' 
-                                       : 'bg-black/30 border-white/20 text-transparent hover:border-accent hover:bg-accent/5'
+                                       : 'bg-white dark:bg-black/30 border-neutral-300 dark:border-white/20 text-transparent hover:border-accent hover:bg-accent/5 dark:hover:bg-accent/5'
                                    }`}>
                                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3.5">
                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -152,7 +152,7 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
                                   onClick={() => setActiveTopicId(isTopicActive ? null : topic.id)}
                                   className="text-left font-medium text-sm sm:text-base hover:underline focus:outline-none min-w-0"
                                 >
-                                  <span className={`block truncate ${isTopicCompleted ? 'line-through opacity-50' : ''}`}>
+                                  <span className={`block truncate ${isTopicCompleted ? 'line-through opacity-40 text-neutral-400 dark:text-white/40' : ''}`}>
                                     {topic.title}
                                   </span>
                                 </button>
@@ -161,14 +161,14 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
                               <div className="flex items-center gap-2">
                                 <button
                                   onClick={() => onOpenChat(week.theme, topic.title)}
-                                  className="p-1.5 hover:bg-white/5 rounded-md transition text-accent"
+                                  className="p-1.5 hover:bg-neutral-200 dark:hover:bg-white/5 rounded-md transition text-accent"
                                   title="Ask assistant about this topic"
                                 >
                                   <MessageSquare size={16} />
                                 </button>
                                 <button
                                   onClick={() => setActiveTopicId(isTopicActive ? null : topic.id)}
-                                  className="text-xs opacity-60 hover:opacity-100 transition focus:outline-none"
+                                  className="text-xs text-neutral-500 dark:text-white/60 hover:text-neutral-900 dark:hover:text-white transition focus:outline-none"
                                 >
                                   {isTopicActive ? 'Hide' : 'Details'}
                                 </button>
@@ -177,8 +177,8 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
 
                             {/* Topic Details (Expandable) */}
                             {isTopicActive && (
-                              <div className="px-4 pb-4 border-t border-dashed border-white/5 pt-3 text-sm">
-                                <p className="opacity-70 mb-4 text-xs sm:text-sm text-white/70">
+                              <div className="px-4 pb-4 border-t border-dashed border-neutral-200 dark:border-white/5 pt-3 text-sm">
+                                <p className="text-neutral-500 dark:text-white/70 mb-4 text-xs sm:text-sm">
                                   {topic.description}
                                 </p>
 
@@ -194,28 +194,28 @@ export default function Timeline({ path, onToggleTopic, onOpenChat }) {
                                         href={res.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="p-3 bg-white/[0.01] border border-white/5 hover:border-accent/40 rounded-lg flex items-start gap-3 transition"
+                                        className="p-3 bg-white dark:bg-white/[0.01] border border-neutral-200 dark:border-white/5 hover:border-accent/40 rounded-lg flex items-start gap-3 transition"
                                       >
                                         {isYoutube && (
-                                          <div className="p-2 bg-red-950/20 text-red-400 rounded">
+                                          <div className="p-2 bg-red-50 dark:bg-red-950/20 text-red-500 dark:text-red-400 rounded">
                                             <Play size={16} className="fill-red-600/10" />
                                           </div>
                                         )}
                                         {isBook && (
-                                          <div className="p-2 bg-blue-950/20 text-blue-400 rounded">
+                                          <div className="p-2 bg-blue-50 dark:bg-blue-950/20 text-blue-500 dark:text-blue-400 rounded">
                                             <BookOpen size={16} />
                                           </div>
                                         )}
                                         {res.type === 'DOCUMENT' && (
-                                          <div className="p-2 bg-emerald-950/20 text-emerald-400 rounded">
+                                          <div className="p-2 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-500 dark:text-emerald-400 rounded">
                                             <ExternalLink size={16} />
                                           </div>
                                         )}
                                         <div className="min-w-0 text-xs">
-                                          <span className="font-semibold block truncate leading-tight text-white">
+                                          <span className="font-semibold block truncate leading-tight text-neutral-800 dark:text-white">
                                             {res.title}
                                           </span>
-                                          <span className="opacity-55 block truncate mt-0.5 text-white/50">
+                                          <span className="text-neutral-450 dark:text-white/50 block truncate mt-0.5">
                                             {res.description || (isYoutube ? 'YouTube Video Tutorial' : 'Learning resource')}
                                           </span>
                                         </div>

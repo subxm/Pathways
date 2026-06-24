@@ -129,7 +129,7 @@ export default function DashboardPage() {
     });
 
   return (
-    <div className="relative min-h-screen bg-[#0D0D0C] text-white flex flex-col font-body overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#F9F9F8] text-[#192837] dark:bg-[#0D0D0C] dark:text-white flex flex-col font-body overflow-x-hidden">
       <Navbar isDashboard={true} />
       <main className="relative z-10 flex-grow w-full px-8 md:px-12 pb-20 mt-16 pt-6">
 
@@ -138,7 +138,7 @@ export default function DashboardPage() {
             <h1 className="font-heading text-4xl mb-2 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
               Workspace
             </h1>
-            <p className="text-sm text-white/50">Manage your generated AI curriculums and learning progress.</p>
+            <p className="text-sm text-neutral-500 dark:text-white/50">Manage your generated AI curriculums and learning progress.</p>
           </div>
           <Link
             to="/path/new"
@@ -150,56 +150,56 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-          <div className="relative group p-5 bg-white/[0.02] border border-white/5 rounded-xl flex items-center gap-4 hover:border-white/10 transition shadow-lg cursor-help">
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-64 p-3 bg-[#121211] border border-white/10 text-white/70 text-[11px] rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-200 z-50 text-center leading-relaxed">
-              <span className="font-semibold text-white block mb-1">Active Curricula</span>
+          <div className="relative group p-5 bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 rounded-xl flex items-center gap-4 hover:border-neutral-300 dark:hover:border-white/10 transition shadow-lg cursor-help">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-64 p-3 bg-white dark:bg-[#121211] border border-neutral-200 dark:border-white/10 text-neutral-600 dark:text-white/70 text-[11px] rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-200 z-50 text-center leading-relaxed">
+              <span className="font-semibold text-neutral-800 dark:text-white block mb-1">Active Curricula</span>
               You have {activePathsCount} learning roadmaps currently in progress. Complete topics to increase your score!
-              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-[#121211]" />
+              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-white dark:border-t-[#121211]" />
             </div>
             <div className="p-3 bg-accent/10 rounded-lg text-accent">
               <BookOpen size={20} />
             </div>
             <div>
               <div className="text-2xl font-bold font-heading">{activePathsCount}</div>
-              <div className="text-xs text-white/40 uppercase font-semibold tracking-wider">Active Paths</div>
+              <div className="text-xs text-neutral-400 dark:text-white/40 uppercase font-semibold tracking-wider">Active Paths</div>
             </div>
           </div>
           
-          <div className="relative group p-5 bg-white/[0.02] border border-white/5 rounded-xl flex items-center gap-4 hover:border-white/10 transition shadow-lg cursor-help">
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-64 p-3 bg-[#121211] border border-white/10 text-white/70 text-[11px] rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-200 z-50 text-center leading-relaxed">
-              <span className="font-semibold text-white block mb-1">Total Completion Score</span>
+          <div className="relative group p-5 bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 rounded-xl flex items-center gap-4 hover:border-neutral-300 dark:hover:border-white/10 transition shadow-lg cursor-help">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-64 p-3 bg-white dark:bg-[#121211] border border-neutral-200 dark:border-white/10 text-neutral-600 dark:text-white/70 text-[11px] rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-200 z-50 text-center leading-relaxed">
+              <span className="font-semibold text-neutral-800 dark:text-white block mb-1">Total Completion Score</span>
               Across all generated roadmaps, you have completed {totalTopicsDone} topics, marking {overallProgressPercentage}% overall progress.
-              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-[#121211]" />
+              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-white dark:border-t-[#121211]" />
             </div>
             <div className="p-3 bg-accent/10 rounded-lg text-accent">
               <CheckCircle size={20} />
             </div>
             <div>
               <div className="text-2xl font-bold font-heading">{totalTopicsDone}</div>
-              <div className="text-xs text-white/40 uppercase font-semibold tracking-wider">Topics Completed</div>
+              <div className="text-xs text-neutral-400 dark:text-white/40 uppercase font-semibold tracking-wider">Topics Completed</div>
             </div>
           </div>
           
-          <div className="relative group p-5 bg-white/[0.02] border border-white/5 rounded-xl flex items-center gap-4 hover:border-white/10 transition shadow-lg cursor-help">
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-64 p-3 bg-[#121211] border border-white/10 text-white/70 text-[11px] rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-200 z-50 text-center leading-relaxed">
-              <span className="font-semibold text-white block mb-1">Daily Habit Streak</span>
+          <div className="relative group p-5 bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 rounded-xl flex items-center gap-4 hover:border-neutral-300 dark:hover:border-white/10 transition shadow-lg cursor-help">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-64 p-3 bg-white dark:bg-[#121211] border border-neutral-200 dark:border-white/10 text-neutral-600 dark:text-white/70 text-[11px] rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-200 z-50 text-center leading-relaxed">
+              <span className="font-semibold text-neutral-800 dark:text-white block mb-1">Daily Habit Streak</span>
               You are doing great! Complete at least one topic checkmark today to extend your learning streak.
-              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-[#121211]" />
+              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-white dark:border-t-[#121211]" />
             </div>
             <div className="p-3 bg-accent/10 rounded-lg text-accent">
               <Flame size={20} />
             </div>
             <div>
               <div className="text-2xl font-bold font-heading">{learningStreak} days</div>
-              <div className="text-xs text-white/40 uppercase font-semibold tracking-wider">Learning Streak</div>
+              <div className="text-xs text-neutral-400 dark:text-white/40 uppercase font-semibold tracking-wider">Learning Streak</div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 dark:border-white/5 pb-4">
             
-            <div className="flex gap-1.5 p-1 bg-white/[0.02] border border-white/5 rounded-lg self-start">
+            <div className="flex gap-1.5 p-1 bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 rounded-lg self-start">
               {[
                 { id: 'all', label: 'All Curricula' },
                 { id: 'active', label: 'In Progress' },
@@ -211,7 +211,7 @@ export default function DashboardPage() {
                   className={`text-xs px-3.5 py-1.5 rounded-md font-semibold transition ${
                     activeTab === tab.id
                       ? 'bg-accent text-white shadow-sm'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                      : 'text-neutral-500 dark:text-white/60 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5'
                   }`}
                 >
                   {tab.label}
@@ -224,16 +224,16 @@ export default function DashboardPage() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full sm:w-auto pl-3 pr-8 py-2 text-xs bg-white/[0.02] border border-white/5 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition text-white/80 hover:text-white appearance-none cursor-pointer font-semibold"
+                  className="w-full sm:w-auto pl-3 pr-8 py-2 text-xs bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition text-neutral-700 dark:text-white/80 hover:text-neutral-900 hover:dark:text-white appearance-none cursor-pointer font-semibold"
                 >
-                  <option value="created-desc" className="bg-[#121211] text-white">Newest First</option>
-                  <option value="created-asc" className="bg-[#121211] text-white">Oldest First</option>
-                  <option value="skill-asc" className="bg-[#121211] text-white">Name (A-Z)</option>
-                  <option value="skill-desc" className="bg-[#121211] text-white">Name (Z-A)</option>
-                  <option value="progress-desc" className="bg-[#121211] text-white">Progress (High to Low)</option>
-                  <option value="progress-asc" className="bg-[#121211] text-white">Progress (Low to High)</option>
+                  <option value="created-desc" className="bg-white dark:bg-[#121211] text-neutral-800 dark:text-white">Newest First</option>
+                  <option value="created-asc" className="bg-white dark:bg-[#121211] text-neutral-800 dark:text-white">Oldest First</option>
+                  <option value="skill-asc" className="bg-white dark:bg-[#121211] text-neutral-800 dark:text-white">Name (A-Z)</option>
+                  <option value="skill-desc" className="bg-white dark:bg-[#121211] text-neutral-800 dark:text-white">Name (Z-A)</option>
+                  <option value="progress-desc" className="bg-white dark:bg-[#121211] text-neutral-800 dark:text-white">Progress (High to Low)</option>
+                  <option value="progress-asc" className="bg-white dark:bg-[#121211] text-neutral-800 dark:text-white">Progress (Low to High)</option>
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-white/40">
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-neutral-400 dark:text-white/40">
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
@@ -241,7 +241,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="relative w-full sm:w-48">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/35">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400 dark:text-white/35">
                   <Search size={14} />
                 </span>
                 <input
@@ -249,7 +249,7 @@ export default function DashboardPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search curricula..."
-                  className="w-full pl-9 pr-4 py-2 text-xs bg-white/[0.02] border border-white/5 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition text-white placeholder-white/30"
+                  className="w-full pl-9 pr-4 py-2 text-xs bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition text-neutral-800 dark:text-white placeholder-neutral-400 dark:placeholder-white/30"
                 />
               </div>
             </div>
@@ -293,21 +293,21 @@ export default function DashboardPage() {
                   <Link
                     key={path.id}
                     to={`/path/${path.id}`}
-                    className="block p-5 bg-white/[0.02] border border-white/5 hover:border-accent/40 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-md relative overflow-hidden group"
+                    className="block p-5 bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 hover:border-accent/40 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-md relative overflow-hidden group"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none" />
 
                     <div className="flex justify-between items-start mb-4 relative z-10">
                       <div>
-                        <h3 className="font-heading text-2xl tracking-tight mb-1 text-white" style={{ fontFamily: 'var(--font-heading)' }}>
+                        <h3 className="font-heading text-2xl tracking-tight mb-1 text-neutral-800 dark:text-white" style={{ fontFamily: 'var(--font-heading)' }}>
                           {path.skill}
                         </h3>
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-semibold px-2 py-0.5 bg-white/5 border border-white/5 text-white/70 rounded uppercase">
+                          <span className="text-[10px] font-semibold px-2 py-0.5 bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-600 dark:text-white/70 rounded uppercase">
                             {path.level}
                           </span>
                           {path.goal && (
-                            <span className="text-[11px] text-white/40 truncate max-w-[250px]">
+                            <span className="text-[11px] text-neutral-400 dark:text-white/40 truncate max-w-[250px]">
                               • Goal: {path.goal}
                             </span>
                           )}
@@ -324,20 +324,20 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
-                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden relative z-10">
+                    <div className="w-full h-1 bg-neutral-200 dark:bg-white/10 rounded-full overflow-hidden relative z-10">
                       <div 
                         className="h-full bg-accent transition-all duration-500"
                         style={{ width: `${progressPercentage}%` }}
                       />
                     </div>
 
-                    <div className="flex justify-between items-center mt-3 text-xs text-white/50 relative z-10">
+                    <div className="flex justify-between items-center mt-3 text-xs text-neutral-500 dark:text-white/50 relative z-10">
                       <span>{path.completedTopicsCount} of {path.totalTopicsCount} topics completed</span>
                       
                       <div className="flex items-center gap-3">
                         <button
                           onClick={(e) => handleDownloadSyllabus(e, path)}
-                          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white/5 hover:bg-accent/25 hover:text-accent border border-white/5 text-white/75 hover:text-white transition-all duration-200 text-xs font-semibold"
+                          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-neutral-100 dark:bg-white/5 hover:bg-accent/15 dark:hover:bg-accent/25 hover:text-accent border border-neutral-200 dark:border-white/5 text-neutral-600 dark:text-white/75 transition-all duration-200 text-xs font-semibold"
                           title="Download Syllabus (.md)"
                         >
                           <Download size={14} />

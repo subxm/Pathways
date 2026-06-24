@@ -57,8 +57,8 @@ export default function PathDetailsPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#0D0D0C] text-white flex flex-col max-h-screen overflow-hidden font-body">
-      <Navbar isDark={true} />
+    <div className="min-h-screen bg-[#F9F9F8] text-[#192837] dark:bg-[#0D0D0C] dark:text-white flex flex-col max-h-screen overflow-hidden font-body">
+      <Navbar />
 
       <div className="flex-grow flex flex-row overflow-hidden relative mt-16">
         {/* Left Area: Path Details and Timeline */}
@@ -70,11 +70,11 @@ export default function PathDetailsPage() {
                 <span className="text-xs font-bold uppercase tracking-wider text-accent mb-1 block">
                   Learning Path
                 </span>
-                <h1 className="font-heading text-3xl sm:text-4xl tracking-tight leading-tight mb-2 text-white" style={{ fontFamily: 'var(--font-heading)' }}>
+                <h1 className="font-heading text-3xl sm:text-4xl tracking-tight leading-tight mb-2 text-neutral-800 dark:text-white" style={{ fontFamily: 'var(--font-heading)' }}>
                   {currentPath.skill}
                 </h1>
-                <div className="flex flex-wrap items-center gap-3 text-xs opacity-65 font-medium text-white/60">
-                  <span className="bg-white/5 border border-white/5 px-2 py-0.5 rounded uppercase font-bold text-[10px]">
+                <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-neutral-500 dark:text-white/60">
+                  <span className="bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 px-2 py-0.5 rounded uppercase font-bold text-[10px] text-neutral-600 dark:text-white/70">
                     {currentPath.level}
                   </span>
                   {currentPath.goal && (
@@ -90,7 +90,7 @@ export default function PathDetailsPage() {
                 onClick={() => setChatOpen(!chatOpen)}
                 className={`flex items-center gap-1.5 py-2.5 px-4 rounded-lg text-xs font-bold transition focus:outline-none ${
                   chatOpen 
-                    ? 'bg-white/10 border border-white/10 text-white' 
+                    ? 'bg-neutral-200 dark:bg-white/10 border border-neutral-300 dark:border-white/10 text-neutral-850 dark:text-white' 
                     : 'bg-accent text-white hover:brightness-110 active:scale-95'
                 }`}
               >
@@ -100,13 +100,13 @@ export default function PathDetailsPage() {
             </div>
 
             {/* Dashboard Progress Banner */}
-            <div className="p-5 bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-xl mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
+            <div className="p-5 bg-white dark:bg-white/[0.02] border border-neutral-200 dark:border-white/5 backdrop-blur-md rounded-xl mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
               <div className="flex-grow">
-                <div className="flex justify-between text-xs font-semibold mb-1.5 text-white/80">
+                <div className="flex justify-between text-xs font-semibold mb-1.5 text-neutral-700 dark:text-white/80">
                   <span className="opacity-75">Curriculum Progress</span>
                   <span>{progressPercentage}% Completed</span>
                 </div>
-                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-neutral-250 dark:bg-white/10 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-accent transition-all duration-300"
                     style={{ width: `${progressPercentage}%` }}
@@ -114,10 +114,10 @@ export default function PathDetailsPage() {
                 </div>
               </div>
               <div className="text-left sm:text-right shrink-0">
-                <span className="text-2xl font-bold font-heading block leading-none text-white">
+                <span className="text-2xl font-bold font-heading block leading-none text-neutral-800 dark:text-white">
                   {currentPath.completedTopicsCount}/{currentPath.totalTopicsCount}
                 </span>
-                <span className="text-[10px] opacity-60 uppercase font-semibold tracking-wider text-white/40">Topics Mastered</span>
+                <span className="text-[10px] uppercase font-semibold tracking-wider text-neutral-400 dark:text-white/40">Topics Mastered</span>
               </div>
             </div>
 

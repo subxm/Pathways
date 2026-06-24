@@ -12,6 +12,103 @@ export default function Navbar({ isLanding = false, isDashboard = false }) {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'dark';
+  });
+
+  const applyTheme = (t) => {
+    if (t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  useEffect(() => {
+    applyTheme(theme);
+    
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const listener = () => applyTheme('system');
+      mediaQuery.addEventListener('change', listener);
+      return () => mediaQuery.removeEventListener('change', listener);
+    }
+  }, [theme]);
+
+  const handleThemeChange = (newTheme) => {
+    localStorage.setItem('theme', newTheme);
+    setTheme(newTheme);
+  };
+
+  const renderDropdown = () => {
+    return (
+      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#121211] border border-neutral-200 dark:border-white/10 rounded-xl shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+        <Link
+          to="/profile"
+          onClick={() => setIsDropdownOpen(false)}
+          className="flex items-center gap-2.5 px-4 py-2 text-sm text-neutral-700 dark:text-white/80 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white transition font-medium"
+        >
+          <User size={16} className="text-neutral-400 dark:text-white/60" />
+          <span>Profile</span>
+        </Link>
+        
+        <div className="h-px bg-neutral-200 dark:bg-white/5 my-1" />
+        
+        {/* Theme Segmented Control */}
+        <div className="px-4 py-2 flex flex-col gap-1.5" onClick={(e) => e.stopPropagation()}>
+          <span className="text-[9px] uppercase tracking-wider font-bold text-neutral-400 dark:text-white/35">
+            Theme
+          </span>
+          <div className="flex bg-neutral-100 dark:bg-black/40 border border-neutral-200/60 dark:border-white/5 rounded-lg p-0.5">
+            <button
+              onClick={() => handleThemeChange('light')}
+              className={`flex-1 text-[10px] font-bold py-1 rounded text-center transition ${
+                theme === 'light'
+                  ? 'bg-accent text-white shadow-sm'
+                  : 'text-neutral-500 dark:text-white/60 hover:text-neutral-800 dark:hover:text-white'
+              }`}
+            >
+              Light
+            </button>
+            <button
+              onClick={() => handleThemeChange('dark')}
+              className={`flex-1 text-[10px] font-bold py-1 rounded text-center transition ${
+                theme === 'dark'
+                  ? 'bg-accent text-white shadow-sm'
+                  : 'text-neutral-500 dark:text-white/60 hover:text-neutral-800 dark:hover:text-white'
+              }`}
+            >
+              Dark
+            </button>
+            <button
+              onClick={() => handleThemeChange('system')}
+              className={`flex-1 text-[10px] font-bold py-1 rounded text-center transition ${
+                theme === 'system'
+                  ? 'bg-accent text-white shadow-sm'
+                  : 'text-neutral-500 dark:text-white/60 hover:text-neutral-800 dark:hover:text-white'
+              }`}
+            >
+              System
+            </button>
+          </div>
+        </div>
+        
+        <div className="h-px bg-neutral-200 dark:bg-white/5 my-1" />
+        
+        <button
+          onClick={async () => {
+            setIsDropdownOpen(false);
+            await handleLogout();
+          }}
+          className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition font-medium text-left"
+        >
+          <LogOut size={16} />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    );
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
@@ -120,29 +217,7 @@ export default function Navbar({ isLanding = false, isDashboard = false }) {
                       <User size={18} />
                     </button>
 
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-[#121211] border border-white/10 rounded-xl shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                        <Link
-                          to="/profile"
-                          onClick={() => setIsDropdownOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white transition font-medium"
-                        >
-                          <User size={16} className="text-white/60" />
-                          <span>Profile</span>
-                        </Link>
-                        <div className="h-px bg-white/5 my-1" />
-                        <button
-                          onClick={async () => {
-                            setIsDropdownOpen(false);
-                            await handleLogout();
-                          }}
-                          className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-950/20 hover:text-red-400 transition font-medium text-left"
-                        >
-                          <LogOut size={16} />
-                          <span>Sign Out</span>
-                        </button>
-                      </div>
-                    )}
+                    {isDropdownOpen && renderDropdown()}
                   </div>
                 </div>
               ) : (
@@ -222,29 +297,7 @@ export default function Navbar({ isLanding = false, isDashboard = false }) {
                   <User size={18} />
                 </button>
 
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-[#121211] border border-white/10 rounded-xl shadow-2xl py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                    <Link
-                      to="/profile"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white transition font-medium"
-                    >
-                      <User size={16} className="text-white/60" />
-                      <span>Profile</span>
-                    </Link>
-                    <div className="h-px bg-white/5 my-1" />
-                    <button
-                      onClick={async () => {
-                        setIsDropdownOpen(false);
-                        await handleLogout();
-                      }}
-                      className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-950/20 hover:text-red-400 transition font-medium text-left"
-                    >
-                      <LogOut size={16} />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
-                )}
+                {isDropdownOpen && renderDropdown()}
               </div>
             </>
           )
