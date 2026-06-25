@@ -116,5 +116,9 @@ export const usePathStore = create((set, get) => ({
       set({ paths: previousPaths, currentPath: previousCurrentPath });
       return false;
     }
+  },
+
+  clearPathsState: () => {
+    set({ paths: [], currentPath: null, isLoadingPaths: false, isGeneratingPath: false });
   }
 }));

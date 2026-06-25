@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import api from '../api/axios';
+import { usePathStore } from './pathStore';
 
 export const useAuthStore = create((set) => ({
   user: null,
@@ -41,6 +42,7 @@ export const useAuthStore = create((set) => ({
     try {
       const res = await api.post('/api/auth/login', { username, password });
       localStorage.setItem('pathways_logged_in', 'true');
+      usePathStore.getState().clearPathsState();
       set({ user: res.data, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (err) {
@@ -57,6 +59,7 @@ export const useAuthStore = create((set) => ({
     try {
       const res = await api.post('/api/auth/google', { email, sub });
       localStorage.setItem('pathways_logged_in', 'true');
+      usePathStore.getState().clearPathsState();
       set({ user: res.data, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (err) {
@@ -75,6 +78,7 @@ export const useAuthStore = create((set) => ({
       // Ignore network errors on logout
     } finally {
       localStorage.removeItem('pathways_logged_in');
+      usePathStore.getState().clearPathsState();
       set({ user: null, isAuthenticated: false });
     }
   },
@@ -82,6 +86,7 @@ export const useAuthStore = create((set) => ({
   // Direct state reset without network request (used by Axios interceptor)
   resetAuthState: () => {
     localStorage.removeItem('pathways_logged_in');
+    usePathStore.getState().clearPathsState();
     set({ user: null, isAuthenticated: false });
   }
 }));
