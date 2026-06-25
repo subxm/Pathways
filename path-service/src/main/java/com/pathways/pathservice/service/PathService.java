@@ -86,19 +86,27 @@ public class PathService {
                         .build();
                 week.getTopics().add(topic);
 
-                // Add documentation resource immediately
-                if (geminiTopic.getSuggestedDocUrl() != null && !geminiTopic.getSuggestedDocUrl().trim().isEmpty()) {
+                boolean isProject = isProjectOrMilestoneTopic(geminiTopic.getTitle(), geminiWeek.getTheme());
+                boolean isSetup = isSetupOrInstallationTopic(geminiTopic.getTitle());
+
+                // Add documentation resource (only if not a project/milestone topic)
+                if (!isProject) {
+                    String docUrl = geminiTopic.getSuggestedDocUrl();
+                    if (docUrl == null || docUrl.trim().isEmpty() || docUrl.contains("example.com")) {
+                        docUrl = geminiClient.getDynamicDocUrl(skill, geminiTopic.getTitle());
+                    }
                     Resource docResource = Resource.builder()
                             .topic(topic)
                             .type(ResourceType.DOCUMENT)
                             .title("Official Documentation")
-                            .url(geminiTopic.getSuggestedDocUrl())
+                            .url(docUrl)
                             .description("Read the official guides and references for " + geminiTopic.getTitle())
                             .thumbnailUrl("")
                             .build();
                     topic.getResources().add(docResource);
                 }
 
+                // Async fetch YouTube resources
                 // Async fetch YouTube resources
                 CompletableFuture<Void> ytFuture = youtubeClient.fetchVideos(skill, geminiTopic.getTitle())
                         .thenAccept(ytResources -> {
@@ -110,16 +118,6 @@ public class PathService {
                             }
                         });
                 futures.add(ytFuture);
-
-                // Async fetch Book resource
-                CompletableFuture<Void> bookFuture = booksClient.fetchBook(skill, geminiTopic.getTitle())
-                        .thenAccept(bookResource -> {
-                            bookResource.setTopic(topic);
-                            synchronized (topic.getResources()) {
-                                    topic.getResources().add(bookResource);
-                            }
-                        });
-                futures.add(bookFuture);
             }
         }
 
@@ -183,10 +181,23 @@ public class PathService {
 
         return path;
     }
+    @Transactional
     public List<LearningPath> getPathsByUserId(UUID userId) {
-        return pathRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        List<LearningPath> paths = pathRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        boolean anyUpdated = false;
+        for (LearningPath path : paths) {
+            if (repairPathResources(path)) {
+                pathRepository.save(path);
+                anyUpdated = true;
+            }
+        }
+        if (anyUpdated) {
+            return pathRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        }
+        return paths;
     }
 
+    @Transactional
     public LearningPath getPathById(UUID pathId, UUID userId) {
         LearningPath path = pathRepository.findById(pathId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Learning path not found"));
@@ -195,6 +206,70 @@ public class PathService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied to learning path");
         }
 
+        if (repairPathResources(path)) {
+            path = pathRepository.save(path);
+        }
+
         return path;
+    }
+
+    private boolean repairPathResources(LearningPath path) {
+        boolean modified = false;
+        String skill = path.getSkill();
+        
+        for (Week week : path.getWeeks()) {
+            for (Topic topic : week.getTopics()) {
+                boolean isProject = isProjectOrMilestoneTopic(topic.getTitle(), week.getTheme());
+                
+                List<Resource> toRemove = new ArrayList<>();
+                for (Resource resource : topic.getResources()) {
+                    // Purge all BOOK resources from the project completely
+                    if (resource.getType() == ResourceType.BOOK) {
+                        toRemove.add(resource);
+                    } else if (isProject) {
+                        // Project topics should only have YouTube videos (no doc)
+                        if (resource.getType() == ResourceType.DOCUMENT) {
+                            toRemove.add(resource);
+                        }
+                    } else {
+                        // Clean up placeholder URLs
+                        if (resource.getType() == ResourceType.DOCUMENT) {
+                            String url = resource.getUrl();
+                            if (url == null || url.trim().isEmpty() || url.contains("example.com")) {
+                                String newUrl = geminiClient.getDynamicDocUrl(skill, topic.getTitle());
+                                resource.setUrl(newUrl);
+                                modified = true;
+                            }
+                        }
+                    }
+                }
+                
+                if (!toRemove.isEmpty()) {
+                    topic.getResources().removeAll(toRemove);
+                    modified = true;
+                }
+            }
+        }
+        return modified;
+    }
+
+    private boolean isProjectOrMilestoneTopic(String topicTitle, String weekTheme) {
+        String t = topicTitle.toLowerCase();
+        String w = (weekTheme != null) ? weekTheme.toLowerCase() : "";
+        
+        return t.contains("project") || t.contains("milestone") || t.contains("capstone") 
+            || t.contains("assembly") || t.contains("build a") || t.contains("portfolio")
+            || t.contains("lab") || t.contains("case study") || t.contains("exercise")
+            || t.contains("assignment") || t.contains("challenge") || t.contains("workshop")
+            || t.contains("integration") || t.contains("putting it all together")
+            || w.contains("project") || w.contains("milestone") || w.contains("capstone")
+            || w.contains("lab") || w.contains("exercise") || w.contains("challenge")
+            || w.contains("workshop") || w.contains("assembly") || w.contains("portfolio");
+    }
+
+    private boolean isSetupOrInstallationTopic(String topicTitle) {
+        String t = topicTitle.toLowerCase();
+        return t.contains("install") || t.contains("setup") || t.contains("verify") || t.contains("environment")
+            || t.contains("prerequisites") || t.contains("configuration") || t.contains("hello world");
     }
 }

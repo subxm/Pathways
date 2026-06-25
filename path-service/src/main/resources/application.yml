@@ -22,5 +22,11 @@ gemini:
   apiKey: ${GEMINI_API_KEY:}
   url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
 
+groq:
+  apiKey: ${GROQ_API_KEY:}
+  apiUrl: https://api.groq.com/openai/v1/chat/completions
+  model: llama-3.3-70b-versatile
+
 youtube:
   apiKey: ${YOUTUBE_API_KEY:}
+

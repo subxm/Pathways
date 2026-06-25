@@ -27,11 +27,11 @@ export default function PathDetailsPage() {
 
   if (isLoadingPaths && !currentPath) {
     return (
-      <div className="min-h-screen bg-[#0D0D0C] text-white flex flex-col">
+      <div className="min-h-screen bg-[#F9F9F8] text-[#192837] dark:bg-[#0D0D0C] dark:text-white flex flex-col">
         <Navbar />
         <div className="flex-grow flex flex-col justify-center items-center">
           <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-xs opacity-60 mt-3 text-white/50">Loading curriculum details...</span>
+          <span className="text-xs opacity-60 mt-3 text-neutral-500 dark:text-white/50">Loading curriculum details...</span>
         </div>
       </div>
     );
@@ -39,11 +39,11 @@ export default function PathDetailsPage() {
 
   if (!currentPath) {
     return (
-      <div className="min-h-screen bg-[#0D0D0C] text-white flex flex-col">
+      <div className="min-h-screen bg-[#F9F9F8] text-[#192837] dark:bg-[#0D0D0C] dark:text-white flex flex-col">
         <Navbar />
         <div className="flex-grow flex flex-col justify-center items-center text-center px-6">
-          <h2 className="font-heading text-2xl mb-2 text-white">Curriculum not found</h2>
-          <p className="text-sm opacity-60 mb-6 text-white/50">This path may have been deleted or you do not have permission to view it.</p>
+          <h2 className="font-heading text-2xl mb-2 text-neutral-800 dark:text-white">Curriculum not found</h2>
+          <p className="text-sm opacity-60 mb-6 text-neutral-500 dark:text-white/50">This path may have been deleted or you do not have permission to view it.</p>
           <Link to="/dashboard" className="text-accent text-sm font-semibold hover:underline">
             &larr; Back to Dashboard
           </Link>

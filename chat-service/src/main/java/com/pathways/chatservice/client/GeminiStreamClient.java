@@ -19,20 +19,71 @@ public class GeminiStreamClient {
     private final WebClient webClient;
     private final String apiKey;
     private final String streamUrl;
+    private final String groqApiKey;
+    private final String groqStreamUrl;
+    private final String groqModel;
     private final ObjectMapper objectMapper;
 
     public GeminiStreamClient(
             WebClient.Builder webClientBuilder,
             @Value("${gemini.apiKey}") String apiKey,
             @Value("${gemini.streamUrl}") String streamUrl,
+            @Value("${groq.apiKey:}") String groqApiKey,
+            @Value("${groq.streamUrl:https://api.groq.com/openai/v1/chat/completions}") String groqStreamUrl,
+            @Value("${groq.model:llama-3.3-70b-versatile}") String groqModel,
             ObjectMapper objectMapper) {
         this.webClient = webClientBuilder.build();
         this.apiKey = apiKey;
         this.streamUrl = streamUrl;
+        this.groqApiKey = groqApiKey;
+        this.groqStreamUrl = groqStreamUrl;
+        this.groqModel = groqModel;
         this.objectMapper = objectMapper;
     }
 
     public Flux<String> streamChat(String systemInstructionText, List<ChatMessage> history, String userPrompt) {
+        // If Groq key is present, prioritize Groq
+        if (groqApiKey != null && !groqApiKey.trim().isEmpty()) {
+            List<Map<String, Object>> messages = new ArrayList<>();
+            
+            // Add system instruction
+            Map<String, Object> sysMsg = new HashMap<>();
+            sysMsg.put("role", "system");
+            sysMsg.put("content", systemInstructionText);
+            messages.add(sysMsg);
+
+            // Add history
+            for (ChatMessage msg : history) {
+                Map<String, Object> m = new HashMap<>();
+                m.put("role", "USER".equalsIgnoreCase(msg.getSender()) ? "user" : "assistant");
+                m.put("content", msg.getContent());
+                messages.add(m);
+            }
+
+            // Add user prompt
+            Map<String, Object> userMsg = new HashMap<>();
+            userMsg.put("role", "user");
+            userMsg.put("content", userPrompt);
+            messages.add(userMsg);
+
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("model", groqModel);
+            requestBody.put("stream", true);
+            requestBody.put("messages", messages);
+
+            return webClient.post()
+                    .uri(groqStreamUrl)
+                    .header("Authorization", "Bearer " + groqApiKey)
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToFlux(String.class)
+                    .flatMap(this::extractTextFromGroqSseChunk)
+                    .onErrorResume(throwable -> {
+                        System.err.println("[WARNING] Groq stream error: " + throwable.getMessage() + ". Falling back to mock chat assistant stream...");
+                        return getFallbackChatResponse(userPrompt);
+                    });
+        }
+
         // Construct Gemini request payload
         Map<String, Object> requestBody = new HashMap<>();
 
@@ -83,14 +134,49 @@ public class GeminiStreamClient {
                 });
     }
 
+    private Flux<String> extractTextFromGroqSseChunk(String chunk) {
+        if (chunk == null || chunk.trim().isEmpty()) {
+            return Flux.empty();
+        }
+
+        List<String> results = new ArrayList<>();
+        String[] lines = chunk.split("\n");
+        for (String line : lines) {
+            line = line.trim();
+            if (line.equals("data: [DONE]")) {
+                continue;
+            }
+            if (line.startsWith("data:")) {
+                String jsonData = line.substring(5).trim();
+                try {
+                    JsonNode root = objectMapper.readTree(jsonData);
+                    JsonNode choices = root.path("choices");
+                    if (choices.isArray() && !choices.isEmpty()) {
+                        JsonNode firstChoice = choices.get(0);
+                        JsonNode delta = firstChoice.path("delta");
+                        if (delta.has("content")) {
+                            String text = delta.path("content").asText();
+                            if (text != null && !text.isEmpty()) {
+                                results.add(text);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    // Ignore control/partial chunks
+                }
+            }
+        }
+        return Flux.fromIterable(results);
+    }
+
     private Flux<String> getFallbackChatResponse(String userPrompt) {
-        String fullResponse = "Hello! I am your Pathways AI guide. I'm currently running in **Offline Demo Mode** because the Gemini API credentials are not fully configured or have expired. However, I can still assist you with general guidance!\n\n" +
+        String fullResponse = "Hello! I am your Pathways AI guide. I'm currently running in **Offline Demo Mode** because the Gemini and Groq API credentials are not fully configured or have expired. However, I can still assist you with general guidance!\n\n" +
                 "You asked: *\"" + userPrompt + "\"*\n\n" +
                 "Here are some helpful pointers for this stage of your learning:\n" +
                 "1. **Consult Official Documentation:** Follow the links provided in your curriculum timeline. They point to official and reputable resources.\n" +
                 "2. **Build Mini-Projects:** The best way to learn is by doing. Try creating small, sandbox projects to apply each topic's objectives.\n" +
-                "3. **Ask Detailed Questions:** Once the API key is set up, I'll be able to explain complex code snippets, run quiz questions, and act as a personalized interactive tutor.\n\n" +
-                "To connect a live Gemini API key, make sure to set the `GEMINI_API_KEY` environment variable on your system and restart the services, or update the `application.yml` file with a valid developer key (starting with `AIzaSy...`). Let me know if you want me to outline any other concepts!";
+                "3. **Ask Detailed Questions:** Once an API key is set up, I'll be able to explain complex code snippets, run quiz questions, and act as a personalized interactive tutor.\n\n" +
+                "To connect a live AI assistant, set either the `GROQ_API_KEY` or `GEMINI_API_KEY` environment variable on your system and restart the services, or update the `application.yml` file with a valid developer key. Let me know if you want me to outline any other concepts!";
 
         // Split by space/whitespace but keep it to simulate streaming tokens
         String[] words = fullResponse.split("(?<=\\s)");
