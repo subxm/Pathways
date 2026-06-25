@@ -74,6 +74,7 @@ public class GeminiStreamClient {
             return webClient.post()
                     .uri(groqStreamUrl)
                     .header("Authorization", "Bearer " + groqApiKey)
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToFlux(String.class)
@@ -143,27 +144,31 @@ public class GeminiStreamClient {
         String[] lines = chunk.split("\n");
         for (String line : lines) {
             line = line.trim();
-            if (line.equals("data: [DONE]")) {
+            if (line.equals("data: [DONE]") || line.equals("[DONE]")) {
                 continue;
             }
+            String jsonData = line;
             if (line.startsWith("data:")) {
-                String jsonData = line.substring(5).trim();
-                try {
-                    JsonNode root = objectMapper.readTree(jsonData);
-                    JsonNode choices = root.path("choices");
-                    if (choices.isArray() && !choices.isEmpty()) {
-                        JsonNode firstChoice = choices.get(0);
-                        JsonNode delta = firstChoice.path("delta");
-                        if (delta.has("content")) {
-                            String text = delta.path("content").asText();
-                            if (text != null && !text.isEmpty()) {
-                                results.add(text);
-                            }
+                jsonData = line.substring(5).trim();
+            }
+            if (jsonData.isEmpty()) {
+                continue;
+            }
+            try {
+                JsonNode root = objectMapper.readTree(jsonData);
+                JsonNode choices = root.path("choices");
+                if (choices.isArray() && !choices.isEmpty()) {
+                    JsonNode firstChoice = choices.get(0);
+                    JsonNode delta = firstChoice.path("delta");
+                    if (delta.has("content")) {
+                        String text = delta.path("content").asText();
+                        if (text != null && !text.isEmpty()) {
+                            results.add(text);
                         }
                     }
-                } catch (Exception e) {
-                    // Ignore control/partial chunks
                 }
+            } catch (Exception e) {
+                // Ignore control/partial chunks
             }
         }
         return Flux.fromIterable(results);

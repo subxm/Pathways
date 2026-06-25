@@ -61,6 +61,7 @@ public class GeminiClient {
                 Map<String, Object> response = webClient.post()
                         .uri(groqApiUrl)
                         .header("Authorization", "Bearer " + groqApiKey)
+                        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
                         .bodyValue(requestBody)
                         .retrieve()
                         .bodyToMono(Map.class)
